@@ -85,6 +85,9 @@
                         <a href="market_edit_product.php?product_id=<?=$p["product_id"] ?>"><span class="edit">Edit</span></a>
                         <span class="stock">Stock: 5</span></p>
                 </div>
+                <div>
+                    <a href="lorem ipsum"></a>
+                </div>
             </div>
         </div>
         <?php  }?>
