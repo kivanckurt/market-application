@@ -55,7 +55,7 @@ function updateMarketInfo($email, $market_name, $city, $district, $address){
     $stmt->execute([$market_name,$city,$district,$address,$email]);
 }
 
-function updateProduct($user, $product_id, $product_title, $product_price, $product_disc_price, $product_exp_date, $product_stock){
+function updateProduct($user, $product_id, $product_title, $product_price, $product_disc_price, $product_exp_date, $product_stock, $product_image){
     // var_dump($email,$address,$city,$district, $market_name);
     global $db ;
     $email = $user["email"];
@@ -64,22 +64,26 @@ function updateProduct($user, $product_id, $product_title, $product_price, $prod
     SET stock = :product_stock,
         product_title = :product_title, 
         product_price = :product_price, 
-        product_exp_date = :product_exp_date
-  WHERE email = :email 
+        product_disc_price = :product_disc_price,
+        product_exp_date = :product_exp_date,
+        product_image =:product_image
+    WHERE email = :email 
     AND products.product_id = :product_id 
     AND stocks.product_id = products.product_id");
 
-// Bind parameters with their respective data types for improved security
-$product_stock = (int)$product_stock;
-var_dump($product_stock);
-$stmt->bindParam(':product_title', $product_title, PDO::PARAM_STR);
-$stmt->bindParam(':product_price', $product_price, PDO::PARAM_STR);  // Consider PDO::PARAM_INT if price is purely numeric
-$stmt->bindParam(':product_exp_date', $product_exp_date, PDO::PARAM_STR);
-$stmt->bindParam(':product_stock', $product_stock, PDO::PARAM_INT);   // Change to PDO::PARAM_STR if stock allows non-numeric values
-$stmt->bindParam(':email', $email, PDO::PARAM_STR);
-$stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);      // Change to PDO::PARAM_STR if product_id allows non-numeric values
-
-$stmt->execute();
+    // Bind parameters with their respective data types for improved security
+    $product_stock = (int)$product_stock;
+    var_dump($product_stock);
+    $stmt->bindParam(':product_title', $product_title, PDO::PARAM_STR);
+    $stmt->bindParam(':product_price', $product_price, PDO::PARAM_STR);  // Consider PDO::PARAM_INT if price is purely numeric
+    $stmt->bindParam(':product_disc_price', $product_disc_price, PDO::PARAM_STR);  // Consider PDO::PARAM_INT if price is purely numeric
+    $stmt->bindParam(':product_exp_date', $product_exp_date, PDO::PARAM_STR);
+    $stmt->bindParam(':product_stock', $product_stock, PDO::PARAM_INT);   // Change to PDO::PARAM_STR if stock allows non-numeric values
+    $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+    $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+    $stmt->bindParam(':product_image', $product_image, PDO::PARAM_STR);
+    // Change to PDO::PARAM_STR if product_id allows non-numeric values
+    $stmt->execute();
 }
 function updateProductStock($user, $product_id, $product_stock){
     global $db ;
@@ -100,7 +104,6 @@ function getProductDetailed($id){
     AND stocks.email = market_user.email
     AND market_user.email = ?
     AND products.product_id= ?
-    AND products.product_exp_date> sysdate()
     LIMIT 0,4;
     ";
     var_dump($user);

@@ -4,7 +4,6 @@
     // var_dump($_SESSION); 
     if($_SERVER["REQUEST_METHOD"]=="POST"){
         extract($_POST);
-
         if(count($_POST)<=3)
         {
             echo "IsValidated: "; 
@@ -24,7 +23,7 @@
             }
             else{
             echo "ENTER NUMBER CORRECT";
-        }
+            }
         }
         else{
             global $db;
@@ -46,22 +45,11 @@
         $token = $_COOKIE["access_token"];
         $user = getUserByToken($token);
         if($user){
-            $_SESSION["user"] = $user;
-            header("Location: market_main.php");
-            exit;
-        }
-    }
-
-    //if already logged in skip login.php
-    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
-        $user = getUserByToken($token);
-        if($user){
-            $_SESSION["user"]=$user;
+            $_SESSION["market_user"] = $user;
             header("location: market_main.php");
             exit;
         }
     }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -83,11 +71,11 @@
                 echo "</tr>";
                 echo " <tr>";
                 echo "<td>Market Name: </td>";
-                echo "<td><input type='text' name='market_name' id=''></td>";
+                echo "<td><input type='text' name='market_name' id='' ></td>";
                 echo "</tr>";
                 echo " <tr>";
                 echo "<td>Password: </td>";
-                echo "<td><input type='password' name='password' id=''></td>";
+                echo "<td><input type='password' name='password' id='' ></td>";
                 echo "</tr>";
                 echo " <tr>";
                 echo "<td>City: </td>";
@@ -114,11 +102,11 @@
             
             <tr>
             <td>Email: </td>
-                <td><input type="text" name="email" id=""></td>
+                <td><input type="text" name="email" id="" value='eryaman@migros.com.tr'></td>
             </tr>
             <tr>
                 <td>Password:</td>
-                <td><input type="password" name="password" id=""></td>
+                <td><input type="password" name="password" id="" value='1234'></td>
             </tr>
             <tr>
                 <td><button type="submit">Log In</button></td>

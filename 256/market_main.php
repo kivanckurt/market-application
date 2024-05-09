@@ -14,7 +14,7 @@
         WHERE products.product_id = stocks.product_id
         AND stocks.email = market_user.email
         AND market_user.email = ?
-        AND products.product_exp_date> sysdate()
+        AND products.product_exp_date< sysdate()
         ORDER BY ?
         LIMIT 0,4;
         ";
@@ -22,8 +22,6 @@
         $stmt = $db->prepare($query_expired_products);
         $stmt->execute([$user["email"], "products.product_exp_date"]);
         $products = $stmt ->fetchAll();
- 
-
     }
 
 ?>
@@ -42,6 +40,9 @@
         .market_product .stock{position: absolute; right: 50px;}
         /* .market_product .edit{} */
         .market_product_table_cell{margin: 50px;}
+        .market_product .last{position: absolute; right: 10px;}
+        .market_product td{width: 120px;}
+        
     </style>
 </head>
 <body>
@@ -53,6 +54,7 @@
     <p><a href="logout.php">Log out</a></p>
 
     <section class="market_products">
+        <h3>Expired Products</h3>
         <?php foreach ($products as $p){ ?>
             <div class="market_product">
             <div >
@@ -77,17 +79,17 @@
                             <p>Discounted Price:</p>
                             <span class="market_product_disc_price"> <?=$p["product_disc_price"] ?></span>
                         </td>
+                        <td>
+                            <p>Stock: </p>
+                            <span>5</span>
+                        </td>
+                        <td class="last">
+                            <p><a href=""><span class="remove">Remove</span></a></p>
+                            <p><a href="market_edit_product.php?product_id=<?=$p["product_id"] ?>"><span class="edit">Edit</span></a></p>
+                        </td>
                     </tr>
                 </table>
-                <div>
-                    <p>
-                        <a href=""><span class="remove">Remove</span></a>
-                        <a href="market_edit_product.php?product_id=<?=$p["product_id"] ?>"><span class="edit">Edit</span></a>
-                        <span class="stock">Stock: 5</span></p>
-                </div>
-                <div>
-                    <a href="lorem ipsum"></a>
-                </div>
+
             </div>
         </div>
         <?php  }?>
