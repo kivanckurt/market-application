@@ -110,7 +110,7 @@ function getProductDetailed($id){
   }
 
 function isAuthenticated(){
-    return isset($_SESSION["user"]);
+    return isset($_SESSION["market_user"]);
 }
 
 function getUserByToken($token){
