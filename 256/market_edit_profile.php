@@ -50,7 +50,7 @@ if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && iss
   if(isset($user["remember"]) && isset($_POST["remember"]));
   if(isset($user["remember"]) && !isset($_POST["remember"])){
     //destroy cookie
-    setTokenByEmail($_SESSION["user"]["email"], null) ;
+    setTokenByEmail($_SESSION["market_user"]["email"], null) ;
     setcookie("access_token", "", 1) ;
     setcookie("PHPSESSID", "", 1 , "/") ;
   }
@@ -83,6 +83,7 @@ if(isset($_GET["message"])){
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
+  <?= require_once "market_user_header.php"; ?>
   <section>
     <div>
     <form action="" method="post">

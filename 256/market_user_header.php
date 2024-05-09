@@ -1,7 +1,7 @@
 <?php
 if(isset($_SESSION["market_user"])){
     extract($_SESSION["market_user"]);
-    var_dump($_SESSION["market_user"]);
+    // var_dump($_SESSION["market_user"]);
     $user = $_SESSION["market_user"];
 }
 ?>
@@ -25,7 +25,7 @@ if(isset($_SESSION["market_user"])){
         <table>
             <tr>
                 <td class="logo">
-                    <div><span><a href="?">xxmarkt</a></span></div>
+                    <div><span><a href="market_main.php">xxmarkt</a></span></div>
                 </td>
                 <td>
                     <form action="market_main.php" method="post">

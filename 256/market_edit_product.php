@@ -1,25 +1,22 @@
 <?php
     session_start();
     require_once "db.php";
-    $user = $_SESSION["user"];
-
+    $user = $_SESSION["market_user"];
     $upload_max_filesize = ini_get("upload_max_filesize");
     $post_max_size = ini_get("post_max_size") ;
   
     echo "<p>Max Upload Filesize : $upload_max_filesize</p>" ;
   
     $error = [] ;
-  
     if ( $_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST)){
       $error[] = "Post Max Error" ;
     }
-  
+
     if(!isset($_GET["product_id"])){
         header("location: market_main.php");
         exit;
     }
     extract($_GET);
-
     extract(getProductDetailed($product_id));
     var_dump((getProductDetailed($product_id)));
     if(!empty($_POST)){
@@ -28,7 +25,7 @@
         foreach($_FILES as $fb => $file) {
             if ( $file["size"] == 0) {
                 if ( empty($file["name"])) {
-                    var_dump($_POST);
+                    // var_dump($_POST);
                     updateProduct($user, $product_id, $product_title, $product_price, $product_disc_price,$product_exp_date,$product_stock, $product_image);
                 } else {
                     $error[] = "{$file['name']} is greater than max upload size in '<b>$fb</b>'" ;
@@ -84,7 +81,7 @@
         </tr>
         <tr>
             <td>Stock</td>
-            <td><input type="number" name="product_stock" id="" value="<?= $stock?>"></td>
+            <td><input type="number" name="product_stock" id="" value="<?= $product_stock ?? $stock?>"></td>
         </tr>
 
         <tr>
