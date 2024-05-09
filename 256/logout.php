@@ -8,7 +8,7 @@
    }
 
    // delete remember me part
-   setTokenByEmail($_SESSION["user"]["email"], null) ;
+   setTokenByEmail($_SESSION["market_user"]["email"], null) ;
    setcookie("access_token", "", 1) ;
    
    if(isset($_COOKIE["shoppingCart"])){
