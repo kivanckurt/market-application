@@ -16,6 +16,7 @@ function validateMarketUser($email, $password, &$user){
     $stmt = $db->prepare("SELECT * FROM `market_user` WHERE market_user.email = ?;") ;
     $stmt->execute([$email]);
     $user = $stmt->fetch() ;
+    // var_dump($user);
     if ($user) {
         if (sha1($password)== $user['password']){
             return $user;

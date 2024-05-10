@@ -39,9 +39,8 @@ if(!empty($_POST) && isset($_POST["password"]) && isset($_POST["password_new"]))
 if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && isset($district) && isset($address)){
   updateMarketInfo($email, $market_name, $city, $district, $address);
   //update session user with new values
-  if(validateMarketUser($email, $user["password"], $user)){
-    $_SESSION["market_user"] = $user; 
-  }
+  validateMarketUser($email, $user["password"], $user);
+  $_SESSION["market_user"]=$user;
 
   //remember me options
   var_dump(isset($user["remember"]));
