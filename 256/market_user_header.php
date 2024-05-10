@@ -19,6 +19,7 @@ if(isset($_SESSION["market_user"])){
     <title>Document</title>
     <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="app.css">
 </head>
 <body>
     <header>
@@ -31,6 +32,9 @@ if(isset($_SESSION["market_user"])){
                     <form action="market_main.php" method="post">
                         <input type="text" name="searchVal" id="searchBar" placeholder="Apple">
                     </form>
+                </td>
+                <td class="addProduct">
+                    <a href="market_add_product.php">+</a>
                 </td>
                 <td class="userInfo">
                     <a href="market_edit_profile.php">

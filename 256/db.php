@@ -62,6 +62,13 @@ function getMarketProducts($user){
     return $stmt->fetch()[0] ;
 }
 
+function getAllProductsAlphabetically(){
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM products order by product_title;") ;
+    $stmt->execute();
+    return $stmt->fetchAll() ;
+}
+
 function updateMarketInfo($email, $market_name, $city, $district, $address){
     // var_dump($email,$address,$city,$district, $market_name);
     global $db ;
@@ -107,6 +114,13 @@ function updateProductStock($user, $product_id, $product_stock){
     $stmt->execute([$product_stock, $email, $product_id,]);
 }
 
+function getProductByTitle($product_title){
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM products where product_title =?;") ;
+    $stmt->execute([$product_title]);
+    return $stmt->fetch() ;
+}
+
 
 
 function getProductDetailed($id){
@@ -149,6 +163,21 @@ function setTokenByEmail($email, $token){
 
 function verifyPassword($password, $hash){
     return sha1($password) == $hash;
+}
+
+function createProduct($product_title, $product_price, $product_disc_price, $product_image){
+    global $db;
+    $stmt = $db->prepare("insert into products (product_title, product_price, product_disc_price,product_image)
+     values(?,?,?,?)");
+     $stmt->execute([$product_title, $product_price, $product_disc_price, $product_image]);
+}
+
+function createStock($product_id, $product_stock, $product_exp_date){
+    global $db;
+    $email = $_SESSION["market_user"]["email"];
+    var_dump($email);
+    $stmt = $db->prepare("insert into stocks values(?,?,?,?)");
+    $stmt->execute([$email, $product_id, $product_stock, $product_exp_date]);
 }
 
  

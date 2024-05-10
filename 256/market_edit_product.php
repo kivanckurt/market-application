@@ -12,7 +12,7 @@
       $error[] = "Post Max Error" ;
     }
 
-    if(!isset($_GET["product_id"])){
+    if(!isset($_GET["product_id"]) or !isAuthenticated()){
         header("location: market_main.php");
         exit;
     }
