@@ -93,13 +93,6 @@ function updateProduct($user, $product_id, $product_title, $product_price, $prod
     // Change to PDO::PARAM_STR if product_id allows non-numeric values
     $stmt->execute();
 }
-function updateProductStock($user, $product_id, $product_stock){
-    global $db ;
-    $email = $user["email"];
-    $stmt = $db->prepare("UPDATE stocks,products SET `stock`= ? 
-    where stocks.email = '?' and products.product_id = ? and stocks.product_id =products.product_id;");
-    $stmt->execute([$product_stock, $email, $product_id,]);
-}
 
 function getProductByTitle($product_title){
     global $db;
@@ -107,9 +100,6 @@ function getProductByTitle($product_title){
     $stmt->execute([$product_title]);
     return $stmt->fetch() ;
 }
-
-
-
 function getProductDetailed($id){
     $user = $_SESSION["market_user"];
     global $db ;
@@ -128,17 +118,17 @@ function getProductDetailed($id){
   }
 
 function isAuthenticated(){
-    return isset($_SESSION["market_user"]);
+    return isset($_SESSION["market_user"]) || isset($_SESSION["user"]);
 }
 
-function getUserByToken($token){
+function getMarketUserByToken($token){
     global $db;
     $stmt = $db->prepare("select * from market_user where remember = ?") ;
     $stmt->execute([$token]) ;
     return $stmt->fetch() ;
 }
 
-function setTokenByEmail($email, $token){
+function setMarketTokenByEmail($email, $token){
     global $db;
     $stmt = $db->prepare("update market_user set remember = ? where email = ?") ;
     $stmt->execute([$token, $email]) ;
@@ -163,4 +153,36 @@ function createStock($product_id, $product_stock, $product_exp_date){
     $stmt->execute([$email, $product_id, $product_stock, $product_exp_date]);
 }
 
+//Consumer Functions
+function getUserByToken($token){
+    global $db;
+    $stmt = $db->prepare("select * from market_user where remember = ?") ;
+    $stmt->execute([$token]) ;
+    return $stmt->fetch() ;
+}
+
+function setTokenByEmail($email, $token){
+    global $db;
+    $stmt = $db->prepare("update market_user set remember = ? where email = ?") ;
+    $stmt->execute([$token, $email]) ;
+} 
+
+
+function getCartInformation(){
+    //  setcookie("shoppingCart","",1);
+ 
+     var_dump($_COOKIE);
+     $cart = isset($_COOKIE["shoppingCart"]) ? json_decode($_COOKIE["shoppingCart"]) : [];
+     if(empty($cart)){
+         return ["cart_total" => 0, "cart_itemCnt"=> 0];
+     }else{
+         $total=0;
+         $itemCnt=sizeof($cart);
+         foreach($cart as $item){
+             $total+=(int)$item[1];
+         }
+         return["cart_total" => $total, "cart_itemCnt"=> $itemCnt];
+         // $itemCnt=sizeof($cart)+1;
+     }
+  }
  

@@ -7,10 +7,14 @@
       exit ;
    }
 
+   //market user logout
    // delete remember me part
-   setTokenByEmail($_SESSION["market_user"]["email"], null) ;
+   if(isset($_SESSION["market_user"])){
+      setMarketTokenByEmail($_SESSION["market_user"]["email"], null) ;
+   }
    setcookie("access_token", "", 1) ;
    
+   //customer logout
    if(isset($_COOKIE["shoppingCart"])){
     setcookie("shoppingCart", "",1);
    }

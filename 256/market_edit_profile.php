@@ -49,7 +49,7 @@ if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && iss
   if(isset($user["remember"]) && isset($_POST["remember"]));
   if(isset($user["remember"]) && !isset($_POST["remember"])){
     //destroy cookie
-    setTokenByEmail($_SESSION["market_user"]["email"], null) ;
+    setMarketTokenByEmail($_SESSION["market_user"]["email"], null) ;
     setcookie("access_token", "", 1) ;
     setcookie("PHPSESSID", "", 1 , "/") ;
   }
@@ -57,7 +57,7 @@ if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && iss
     //create cookie
     $token = sha1(uniqid()."PRIVATE KEY IS HERE" . time());
     setcookie("access_token", $token, time() + 60*60*2, '/');
-    setTokenByEmail($email,$token);
+    setMarketTokenByEmail($email,$token);
   }
   if(!isset($user["remember"]) && !isset($_POST["remember"]));
   $message="Market Information Updated";

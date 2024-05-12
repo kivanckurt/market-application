@@ -15,7 +15,7 @@
             if(isset($rememberme)){
                 $token = sha1(uniqid()."PRIVATE KEY IS HERE" . time());
                 setcookie("access_token", $token, time() + 60*60*2, '/');
-                setTokenByEmail($email,$token);
+                setMarketTokenByEmail($email,$token);
             }
             $_SESSION["market_user"] = $user; // MAKING AN ACTIVE SESSION
             header("location: market_main.php");
@@ -43,7 +43,7 @@
     //remember me auto log in part
     if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
         $token = $_COOKIE["access_token"];
-        $user = getUserByToken($token);
+        $user = getMarketUserByToken($token);
         if($user){
             $_SESSION["market_user"] = $user;
             header("location: market_main.php");
