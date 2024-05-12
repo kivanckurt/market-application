@@ -156,9 +156,22 @@ function getUserByToken($token){
     return $stmt->fetch() ;
 }
 
+function getCustoUserByToken($token){
+    global $db;
+    $stmt = $db->prepare("select * from customers where remember = ?") ;
+    $stmt->execute([$token]) ;
+    return $stmt->fetch() ;
+}
+
 function setTokenByEmail($email, $token){
     global $db;
     $stmt = $db->prepare("update market_user set remember = ? where email = ?") ;
+    $stmt->execute([$token, $email]) ;
+}
+
+function setCustoTokenByEmail($email, $token){
+    global $db;
+    $stmt = $db->prepare("update customers set remember = ? where email = ?") ;
     $stmt->execute([$token, $email]) ;
 }
 

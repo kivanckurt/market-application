@@ -13,7 +13,7 @@
             if(isset($rememberme)){
                 $token = sha1(uniqid()."PRIVATE KEY IS HERE" . time());
                 setcookie("access_token", $token, time() + 60*60*2, '/');
-                setTokenByEmail($email,$token);
+                setCustoTokenByEmail($email,$token);
             }
             $_SESSION["customer_user"] = $user; // MAKING AN ACTIVE SESSION
             header("location: customer_main.php");
@@ -27,7 +27,7 @@
     //remember me auto log in part
     if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
         $token = $_COOKIE["access_token"];
-        $user = getUserByToken($token);
+        $user = getCustoUserByToken($token);
         if($user){
             $_SESSION["user"] = $user;
             header("Location: customer_main.php");
@@ -37,7 +37,7 @@
 
     //if already logged in skip login.php
     if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
-        $user = getUserByToken($token);
+        $user = getCustoUserByToken($token);
         if($user){
             $_SESSION["user"]=$user;
             header("location: customer_main.php");
