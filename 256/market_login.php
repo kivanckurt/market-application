@@ -25,6 +25,7 @@
             echo "ENTER NUMBER CORRECT";
             }
         }
+        //asdasdasd
         else{
             global $db;
             $stmt = $db->prepare("INSERT INTO market_user VALUES (?, ?, ?, ?, ?, ?);") ;
