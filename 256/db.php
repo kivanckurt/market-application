@@ -26,6 +26,20 @@ function validateMarketUser($email, $password, &$user){
    }
 }
 
+function validateCustomerUser($email, $password, &$user){
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM `customers` WHERE customers.email = ?;") ;
+    $stmt->execute([$email]);
+    $user = $stmt->fetch() ;
+    if ($user) {
+        if (sha1($password)== $user['password']){
+            return $user;
+        }else{
+            return false;
+        }
+   }
+}
+
 function setMarketPassword($user, $password_new){
     global $db ;
     $email = $user["email"];
@@ -131,6 +145,10 @@ function isAuthenticated(){
     return isset($_SESSION["market_user"]);
 }
 
+function isAuthenticatedCusto(){
+    return isset($_SESSION["customer_user"]);
+}
+
 function getUserByToken($token){
     global $db;
     $stmt = $db->prepare("select * from market_user where remember = ?") ;
@@ -138,9 +156,22 @@ function getUserByToken($token){
     return $stmt->fetch() ;
 }
 
+function getCustoUserByToken($token){
+    global $db;
+    $stmt = $db->prepare("select * from customers where remember = ?") ;
+    $stmt->execute([$token]) ;
+    return $stmt->fetch() ;
+}
+
 function setTokenByEmail($email, $token){
     global $db;
     $stmt = $db->prepare("update market_user set remember = ? where email = ?") ;
+    $stmt->execute([$token, $email]) ;
+}
+
+function setCustoTokenByEmail($email, $token){
+    global $db;
+    $stmt = $db->prepare("update customers set remember = ? where email = ?") ;
     $stmt->execute([$token, $email]) ;
 }
 
@@ -164,3 +195,14 @@ function createStock($product_id, $product_stock, $product_exp_date){
 }
 
  
+function market_register($email,$market_name,$password,$city,$district,$address){
+    global $db ;
+    $stmt = $db->prepare("INSERT INTO market_user VALUES (?, ?, ?, ?, ?, ?, NULL);") ;
+    $stmt->execute([$email,$market_name,sha1($password),$city,$district,$address]);
+}
+
+function customer_register($email,$password,$fullname,$city,$district,$address){
+    global $db ;
+    $stmt = $db->prepare("INSERT INTO customers VALUES (?, ?, ?,NULL,NULL, ?, ?, ?);") ;
+    $stmt->execute([$email,sha1($password),$fullname,$city,$district,$address]);
+}
