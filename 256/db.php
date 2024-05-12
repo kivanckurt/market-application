@@ -206,3 +206,10 @@ function customer_register($email,$password,$fullname,$city,$district,$address){
     $stmt = $db->prepare("INSERT INTO customers VALUES (?, ?, ?,NULL,NULL, ?, ?, ?);") ;
     $stmt->execute([$email,sha1($password),$fullname,$city,$district,$address]);
 }
+
+function getAllStocks(){
+    global $db;
+    $stmt = $db->prepare("SELECT * FROM products NATURAL JOIN stocks") ;
+    $stmt->execute() ;
+    return $stmt->fetchAll() ;
+}

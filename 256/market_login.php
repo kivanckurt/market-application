@@ -31,7 +31,7 @@
         $token = $_COOKIE["access_token"];
         $user = getUserByToken($token);
         if($user){
-            $_SESSION["user"] = $user;
+            $_SESSION["market_user"] = $user;
             header("Location: market_main.php");
             exit;
         }
@@ -41,7 +41,7 @@
     if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
         $user = getUserByToken($token);
         if($user){
-            $_SESSION["user"]=$user;
+            $_SESSION["market_user"]=$user;
             header("location: market_main.php");
             exit;
         }

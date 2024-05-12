@@ -29,7 +29,7 @@
         $token = $_COOKIE["access_token"];
         $user = getCustoUserByToken($token);
         if($user){
-            $_SESSION["user"] = $user;
+            $_SESSION["customer_user"] = $user;
             header("Location: customer_main.php");
             exit;
         }
@@ -39,7 +39,7 @@
     if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
         $user = getCustoUserByToken($token);
         if($user){
-            $_SESSION["user"]=$user;
+            $_SESSION["customer_user"]=$user;
             header("location: customer_main.php");
             exit;
         }

@@ -4,9 +4,14 @@
 
    if (isAuthenticated()) {
       setTokenByEmail($_SESSION["market_user"]["email"], null) ;
+      setcookie("market_access_token", "", 1) ;
    }
    elseif(isAuthenticatedCusto()){
       setCustoTokenByEmail($_SESSION["customer_user"]["email"], null) ;
+      setcookie("customer_access_token", "", 1) ;
+      if(isset($_COOKIE["shoppingCart"])){
+         setcookie("shoppingCart", "",1);
+        }
    }
    else{
       header("Location: index.php") ;
@@ -16,11 +21,9 @@
    // delete remember me part
    #setTokenByEmail($_SESSION["market_user"]["email"], null) ;
    #setCustoTokenByEmail($_SESSION["customers"]["email"], null) ;
-   setcookie("access_token", "", 1) ;
    
-   if(isset($_COOKIE["shoppingCart"])){
-    setcookie("shoppingCart", "",1);
-   }
+   
+   
    
    // delete session file
    session_destroy() ;
