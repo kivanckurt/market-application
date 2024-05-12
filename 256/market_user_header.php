@@ -1,7 +1,7 @@
 <?php
 if(isset($_SESSION["market_user"])){
     extract($_SESSION["market_user"]);
-    var_dump($_SESSION["market_user"]);
+    // var_dump($_SESSION["market_user"]);
     $user = $_SESSION["market_user"];
 }
 ?>
@@ -19,18 +19,22 @@ if(isset($_SESSION["market_user"])){
     <title>Document</title>
     <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="app.css">
 </head>
 <body>
     <header>
         <table>
             <tr>
                 <td class="logo">
-                    <div><span><a href="?">xxmarkt</a></span></div>
+                    <div><span><a href="market_main.php">xxmarkt</a></span></div>
                 </td>
                 <td>
                     <form action="market_main.php" method="post">
                         <input type="text" name="searchVal" id="searchBar" placeholder="Apple">
                     </form>
+                </td>
+                <td class="addProduct">
+                    <a href="market_add_product.php">+</a>
                 </td>
                 <td class="userInfo">
                     <a href="market_edit_profile.php">

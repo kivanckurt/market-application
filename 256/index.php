@@ -8,6 +8,6 @@
 <body>
     <h1>xx-markt</h1>
     <p><a href="market_login.php">Market log in</a></p>
-    <p><a href="login.php">Log in</a></p>
+    <p><a href="customer_login.php">Log in</a></p>
 </body>
 </html>

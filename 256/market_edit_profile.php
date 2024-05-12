@@ -39,9 +39,8 @@ if(!empty($_POST) && isset($_POST["password"]) && isset($_POST["password_new"]))
 if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && isset($district) && isset($address)){
   updateMarketInfo($email, $market_name, $city, $district, $address);
   //update session user with new values
-  if(validateMarketUser($email, $user["password"], $user)){
-    $_SESSION["market_user"] = $user; 
-  }
+  validateMarketUser($email, $user["password"], $user);
+  $_SESSION["market_user"]=$user;
 
   //remember me options
   var_dump(isset($user["remember"]));
@@ -50,7 +49,7 @@ if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && iss
   if(isset($user["remember"]) && isset($_POST["remember"]));
   if(isset($user["remember"]) && !isset($_POST["remember"])){
     //destroy cookie
-    setTokenByEmail($_SESSION["user"]["email"], null) ;
+    setTokenByEmail($_SESSION["market_user"]["email"], null) ;
     setcookie("access_token", "", 1) ;
     setcookie("PHPSESSID", "", 1 , "/") ;
   }
@@ -83,6 +82,7 @@ if(isset($_GET["message"])){
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
+  <?= require_once "market_user_header.php"; ?>
   <section>
     <div>
     <form action="" method="post">
