@@ -1,19 +1,52 @@
 <?php
     session_start();
     require_once "db.php";
+    require_once './vendor/autoload.php' ;
+    require_once './Mail.php' ;
     // var_dump($_SESSION); 
     if(!empty($_POST)){
-        extract($_POST);
-        
-            customer_register($email,$password,$fullname,$city,$district,$address);
-            if(validateCustomerUser($email, $password, $user)){
+        if(array_key_exists('code',$_POST)){
+            $random=$_SESSION["random"];
+            extract($_POST);
+            $code=intval($code);
+            if($random==$code){
+                $post=$_SESSION["post"];
+                extract($post);
+                customer_register($email,$password,$fullname,$city,$district,$address);
+                if(validateCustomerUser($email, $password, $user)){
 
-            $_SESSION["customer_user"] = $user; // MAKING AN ACTIVE SESSION
-            header("location: customer_main.php");
-            exit;
+                    $_SESSION["customer_user"] = $user; // MAKING AN ACTIVE SESSION
+                    header("location: customer_main.php");
+                    exit;
+                }
+                else{
+                    echo "ENTER NUMBER CORRECT";
+                }
+            }
+            else{
+                //code yanlış ise
+            }
         }
         else{
-            echo "ENTER NUMBER CORRECT";
+            $_SESSION["post"]=$_POST;
+            extract($_POST);
+            $subject="Customer Mail Verification";
+            $random = rand(10000,99999);
+            Mail::send($email,$subject, $random) ;
+            $ok=false;
+            $_SESSION["random"]=$random;
+
+            
+               /* customer_register($email,$password,$fullname,$city,$district,$address);
+                if(validateCustomerUser($email, $password, $user)){
+
+                    $_SESSION["customer_user"] = $user; // MAKING AN ACTIVE SESSION
+                    header("location: customer_main.php");
+                    exit;
+                }
+                else{
+                    echo "ENTER NUMBER CORRECT";
+                }*/
         }
     }
 
@@ -28,6 +61,20 @@
 <body>
     
     <h2>Customer Registration</h2>
+    <?php if (isset($ok)){ ?>
+    <form action="" method="post">
+    <table>
+        <tr>
+            <td>CODE: </td>
+            <td><input type='text' name='code' id=''></td>
+        </tr>
+        <tr>
+            <td><button type='submit'>Register</button></td>
+        </tr>
+    </table>
+    </form>
+    <?= exit;?>
+    <?php  }?>
 
     <form action="" method="post">
     <table>

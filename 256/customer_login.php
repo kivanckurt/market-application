@@ -8,7 +8,7 @@
         echo "IsValidated: "; 
         if(validateCustomerUser($email, $password, $user)){
             //now user is authenticated
-
+            
             //remember me part
             if(isset($rememberme)){
                 $token = sha1(uniqid()."PRIVATE KEY IS HERE" . time());
