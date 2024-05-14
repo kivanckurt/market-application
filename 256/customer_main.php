@@ -8,7 +8,7 @@
         exit;
     }
     $user = $_SESSION["customer_user"];
-    $stocks=getAllStocks();
+    $stocks=getAllProducts();
     
 ?>
 <!DOCTYPE html>
@@ -70,27 +70,17 @@ if(isset($_SESSION["customer_user"])){
     $user = $_SESSION["customer_user"];
 }
 ?>
+<h1><?=$user["name"]?></h1>
+<h1><?=$user["email"]?></h1>
+<h1><?=$user["city"]?></h1>
+<h1><?=$user["city"]?></h1>
+<h1><?=$user["district"]?></h1>
+<h1><?=$user["address"]?></h1>
+<h1><?=$user["remember"]?></h1>
+<h1><?=$user["profile"]?></h1>
+<p><a href="logout.php">Log out</a></p>
+<?php var_dump($_SESSION) ?>
+<?php var_dump($_COOKIE) ?>
 
-<div class="navbar">
-    <div><a href="">Customer Page</a></div>
-    <div><a href="">Profile</a></div>
-    <div><a href="">Sepet&#128722</a></div>
-</div>
-<div class="products">
-    <table>
-        <?php foreach ($stocks as $s){ ?>
-            <tr>
-                <td><?=$s["product_title"] ?></td>
-                <td><?=$s["product_price"] ?></td>
-                <td><?=$s["product_disc_price"] ?></td>
-                <td><img src="images/<?=$s["product_image"] ?>" ></td>
-                <td><?=$s["stock"] ?></td>
-                <td><?=$s["product_exp_date"] ?></td>
-                <td><a href="">&#10133</a></td>
-                <td><a href="">&#10134</a></td>
-        </tr>
-        <?php  }?>
-    </table>
-</div>
 </body>
 </html>

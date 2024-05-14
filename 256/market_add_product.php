@@ -30,7 +30,8 @@
                    if(in_array($detectedType, $allowedTypes)){
                     move_uploaded_file($file["tmp_name"], "./images/" . $file["name"]) ;
                     $product_image = $file["name"];
-                    createProduct($product_title, $product_price, $product_disc_price, $product_image);
+                    $market_email = $_SESSION["market_user"]["email"];
+                    createProduct($product_title,$product_price,$product_disc_price,$product_image,$product_exp_date,$stock,$market_email);
                    }else{
                     $error[]="Upload image file only!";
                    }
@@ -39,15 +40,15 @@
         }
     }
 
-    // Add Stock
-    if($_SERVER["REQUEST_METHOD"]=="POST" && isset($select_product_id) && isset($product_exp_date) && isset($stock)){
-        //If product already exists in market's inventory give alert. This section of the code may be changed in future.
-        if(getProductDetailed($select_product_id)){
-            $error[]= "Product already exists market's inventory";
-        }else{
-            createStock($select_product_id,$stock, $product_exp_date);
-        }
-    }
+    // 
+    // if($_SERVER["REQUEST_METHOD"]=="POST" && isset($select_product_id) && isset($product_exp_date) && isset($stock)){
+    //     //If product already exists in market's inventory give alert. This section of the code may be changed in future.
+    //     if(getProductDetailed($select_product_id)){
+    //         $error[]= "Product already exists market's inventory";
+    //     }else{
+    //         createStock($select_product_id,$stock, $product_exp_date);
+    //     }
+    // }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -79,6 +80,14 @@
             <td><input type="text" name="product_disc_price" ></td>
         </tr>
         <tr>
+            <td>Expiration Date</td>
+            <td><input type="date" name="product_exp_date" id="" value="<?=date('Y-m-d')?>"></td>
+        </tr>
+        <tr>
+            <td>Stock</td>
+            <td><input type="number" name="stock" id="" maxlength="80px"></td>
+        </tr>
+        <tr>
             <td>New Image:</td>
             <td><input type="file" name="newImage"></td>
         </tr>
@@ -88,7 +97,9 @@
         </form>
         </table>
     </div>
-    <div class="form">
+
+    <!-- Product selection form -->
+    <!-- <div class="form">
         <form action="" method="post" enctype="multipart/form-data">
             <table>
                 <tr>
@@ -105,20 +116,11 @@
 
                     </td>
                 </tr>
-                <tr>
-                    <td>Expiration Date</td>
-                    <td><input type="date" name="product_exp_date" id="" value="<?=date('Y-m-d')?>"></td>
-                </tr>
-                <tr>
-                    <td>Stock</td>
-                    <td><input type="number" name="stock" id="" maxlength="80px"></td>
-                </tr>
-                <tr>
                     <td colspan="2"><button type="submit">Submit</button></td>
                 </tr>
             </table>
         </form>
-    </div>
+    </div> -->
     </section>
 </body>
 </html>
