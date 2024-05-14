@@ -8,6 +8,7 @@
         exit;
     }
     $user = $_SESSION["customer_user"];
+    $stocks=getAllProducts();
     
 ?>
 <!DOCTYPE html>
@@ -16,6 +17,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        .navbar{
+            display:flex;flex-direction:row;
+            justify-content:space-around;
+            height:50px;
+            width:800px;
+            margin:20px auto;
+            background-color:blue;
+            border-radius:40px;
+            justify-self: center;
+        }
+        .navbar a{
+            color: white;
+            margin:15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        table,th,td{
+            border:1px solid black;
+            border-collapse: collapse;
+        }
+        table tr{
+            height:80px;
+            
+        }
+        table td{
+            width:100px;
+            margin:0 auto;
+        }
+        table img{
+            height:80px;width: 80px;margin:0 auto;
+        }
+        table{
+            width:800px;
+            margin:0 auto;
+        }
+        table a{
+            text-decoration: none;
+            justify-self: center;
+            margin:0 auto;
+            
+        }
+    </style>
 </head>
 <body>
 <?php
