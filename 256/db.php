@@ -39,7 +39,6 @@ function validateCustomerUser($email, $password, &$user){
         }
    }
 }
-
 function setMarketPassword($user, $password_new){
     global $db ;
     $email = $user["email"];
@@ -106,13 +105,6 @@ function updateProduct($user, $product_id, $product_title, $product_price, $prod
     $stmt->bindParam(':product_image', $product_image, PDO::PARAM_STR);
     // Change to PDO::PARAM_STR if product_id allows non-numeric values
     $stmt->execute();
-}
-function updateProductStock($user, $product_id, $product_stock){
-    global $db ;
-    $email = $user["email"];
-    $stmt = $db->prepare("UPDATE stocks,products SET `stock`= ? 
-    where stocks.email = '?' and products.product_id = ? and stocks.product_id =products.product_id;");
-    $stmt->execute([$product_stock, $email, $product_id,]);
 }
 
 function getProductByTitle($product_title){

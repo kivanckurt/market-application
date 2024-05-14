@@ -34,5 +34,8 @@ if(isset($_SESSION["customer_user"])){
 <h1><?=$user["remember"]?></h1>
 <h1><?=$user["profile"]?></h1>
 <p><a href="logout.php">Log out</a></p>
+<?php var_dump($_SESSION) ?>
+<?php var_dump($_COOKIE) ?>
+
 </body>
 </html>
