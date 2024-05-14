@@ -116,15 +116,10 @@ function getProductByTitle($product_title){
 
 
 function getProductDetailed($id){
-    $user = $_SESSION["market_user"];
     global $db ;
-    $query ="SELECT *
-    FROM products, market_user
+    $query ="SELECT * FROM products, market_user
     WHERE products.market_email = market_user.email
-    AND products.product_id= ?
-    LIMIT 0,4;
-    ";
-    var_dump($user);
+    AND products.product_id= ?;";
     $stmt = $db->prepare($query);
     $stmt->execute([$id]);
     return $stmt->fetch();
