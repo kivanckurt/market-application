@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require "db.php";
+    require_once "db.php";
 
     //if not authenticated, redirect to main page
     if(!isAuthenticated()){

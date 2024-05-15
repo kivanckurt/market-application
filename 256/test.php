@@ -8,9 +8,10 @@
     // var_dump(getProductDetailed(1007));
     $user = &$_SESSION["customer_user"];
     $cart = &$user["cart"];
-    updateCart(1006,5);
-    updateCart(1004,3);
-    updateCart(1003,2);
     var_dump($cart);
-    var_dump(getCartInformation());
+    // var_dump($_SESSION);
+    purchaseCart();
+    var_dump($cart);
+    // var_dump($_SESSION);
+    // var_dump(getCartInformation());
 // Bind parameters with their respective data types for improved security

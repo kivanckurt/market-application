@@ -1,4 +1,5 @@
 <?php
+session_start();
 if(isset($_SESSION["customer_user"])){
     extract($_SESSION["customer_user"]);
     // var_dump($_SESSION["market_user"]);
@@ -7,6 +8,7 @@ if(isset($_SESSION["customer_user"])){
 }
 
 require_once "customer_operations.php";
+require_once "db.php";
 ?>
 <style>
 </style>
@@ -51,6 +53,8 @@ require_once "customer_operations.php";
                 <td>
                     <?php
                         $cartInfo = getCartInformation();
+                        // var_dump($cartInfo);
+                        echo "{$cartInfo['total_price']} TL, {$cartInfo['item_cnt']} ";
                     ?>
                 </td>
                 <td class="userInfo">

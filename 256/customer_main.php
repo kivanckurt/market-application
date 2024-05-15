@@ -1,20 +1,22 @@
 <?php
-    session_start();
-    require "db.php";
-
+    require_once "customer_header.php";
+    require_once "db.php";
+    require_once "customer_operations.php";
     //if not authenticated, redirect to main page
     if(!isAuthenticatedCusto()){
         header("location: customer_login.php");
         exit;
     }
 
-    $user = $_SESSION["customer_user"];
-    $stocks=getAllProducts();
-
-    //generate shopping cart if it is not set
-    if(!isset($_SESSION["customer_user"]["shoppingCart"])){
+    if(!isset($_SESSION["customer_user"]["cart"])){
         $_SESSION["customer_user"]["cart"] = [];
     }
+    $user = &$_SESSION["customer_user"];
+    $stocks=getAllProducts();
+    $cart =$_SESSION["customer_user"]["cart"];
+
+    //generate shopping cart if it is not set
+
 
     $query ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email
     AND market_user.email = ? AND products.product_exp_date> sysdate() AND stock>0;";
@@ -41,10 +43,12 @@
         $products = $stmt ->fetchAll();
         // var_dump($products);
     }
-
-    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($addCart)){
+    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["add"])){
+        echo "<h1>GET METHOD </h1>";
+        $addCart = $_GET["add"];
         updateCart($addCart,1);
     }
+    var_dump($cart);
 
 
     
@@ -124,7 +128,6 @@ if(isset($_SESSION["customer_user"])){
     // var_dump($_SESSION["market_user"]);
     $user = $_SESSION["customer_user"];
 }
-require_once "customer_header.php";
 ?>
 <!-- <h1><?=$user["name"]?></h1>
 <h1><?=$user["email"]?></h1>
@@ -142,7 +145,7 @@ require_once "customer_header.php";
 <section class="market_products">
     <h3> Products</h3>
     <?php
-    var_dump($products);
+    // var_dump($products);
     foreach ($products as $p){ ?>
         <?php 
             // var_dump(strtotime($p["product_exp_date"]));
@@ -179,8 +182,7 @@ require_once "customer_header.php";
                         <span><?= $p["stock"]?></span>
                     </td>
                     <td class="last">
-                        <p><a href="market_remove_product.php?product_id=<?=$p["product_id"] ?>"><span class="remove">Remove</span></a></p>
-                        <span><a href="market_edit_product.php?product_id=<?=$p["product_id"] ?>"><span class="edit">Edit</span></a></span>
+                        <p><a href="?add=<?=$p["product_id"] ?>"><span class="remove">Add To Cart</span></a></p>
                     </td>
                 </tr>
             </table>

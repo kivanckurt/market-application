@@ -65,7 +65,7 @@ function purchaseCart() {
 //product operations
 
 function checkStock($product_id,$count) {
-    return $count >= getStock($product_id);
+    return $count <= getStock($product_id);
 }
 
 function getStock($product_id){
