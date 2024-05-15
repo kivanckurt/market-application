@@ -2,13 +2,13 @@
    session_start() ;
    require "db.php" ;
 
-   if (isAuthenticated()) {
+   if (isAuthenticated() && $_GET["user"]==0) {
       setTokenByEmail($_SESSION["market_user"]["email"], null) ;
       setcookie("market_access_token", "", 1) ;
    }
-   elseif(isAuthenticatedCusto()){
+   elseif(isAuthenticatedCusto() && $_GET["user"]==1){
       setCustoTokenByEmail($_SESSION["customer_user"]["email"], null) ;
-      setcookie("customer_access_token", "", 1) ;
+      setcookie("custo_access_token", "", 1) ;
       if(isset($_COOKIE["shoppingCart"])){
          setcookie("shoppingCart", "",1);
         }
@@ -20,10 +20,7 @@
 
    // delete remember me part
    #setTokenByEmail($_SESSION["market_user"]["email"], null) ;
-   #setCustoTokenByEmail($_SESSION["customers"]["email"], null) ;
-   
-   
-   
+   #setCustoTokenByEmail($_SESSION["customers"]["email"], null) ;  
    
    // delete session file
    session_destroy() ;

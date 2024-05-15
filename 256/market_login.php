@@ -5,7 +5,14 @@
     if(!empty($_POST)){
         extract($_POST);
         // var_dump($_POST);
-        echo "IsValidated: "; 
+
+        $error=[];
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
+            $error["email"]="Email is in a incorrect format";
+        }
+
+        if ( empty($error)){
+        //echo "IsValidated: "; 
         var_dump(validateMarketUser($email, $password, $user));
         if(validateMarketUser($email, $password, $user)){
             //now user is authenticated
@@ -13,7 +20,7 @@
             //remember me part
             if(isset($rememberme)){
                 $token = sha1(uniqid()."PRIVATE KEY IS HERE" . time());
-                setcookie("access_token", $token, time() + 60*60*2, '/');
+                setcookie("market_access_token", $token, time() + 60*60*2, '/');
                 setTokenByEmail($email,$token);
             }
             $_SESSION["market_user"] = $user; // MAKING AN ACTIVE SESSION
@@ -22,13 +29,14 @@
         }
         //asdasdasd
         else{
-            echo "ENTER NUMBER CORRECT";
+            $error["password"]="Password is incorroect";
+        }
         }
     }
 
     //remember me auto log in part
-    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
-        $token = $_COOKIE["access_token"];
+    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["market_access_token"])){
+        $token = $_COOKIE["market_access_token"];
         $user = getUserByToken($token);
         if($user){
             $_SESSION["market_user"] = $user;
@@ -38,7 +46,7 @@
     }
 
     //if already logged in skip login.php
-    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["access_token"])){
+    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_COOKIE["market_access_token"])){
         $user = getUserByToken($token);
         if($user){
             $_SESSION["market_user"]=$user;
@@ -60,15 +68,21 @@
         <table>
             <tr>
                 <td>Email: </td>
-                <td><input type="text" name="email" id=""></td>
+                <td><input type="text" name="email" id="" value=<?= isset($email) ? "$email" : "" ?>></td>
+                <?php if (isset($error["email"])){ ?>
+                <td>Wrong Email</td>
+                <?php  }?>
             </tr>
             <tr>
                 <td>Password:</td>
                 <td><input type="password" name="password" id=""></td>
+                <?php if (isset($error["password"])){ ?>
+                <td><?=$error["password"]?></td>
+                <?php  }?>
             </tr>
             <tr>
                 <td><button type="submit">Log In</button></td>
-                <td>Remember Me<input type="checkbox" name="rememberme" id=""></td>
+                <td>Remember Me<input type="checkbox" name="rememberme" id="" <?= isset($rememberme) ? "checked" : "" ?>></td>
             </tr>
             <tr>
                 <td><p><a href="market_register.php">Register</a></p></td>
