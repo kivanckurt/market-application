@@ -1,10 +1,13 @@
 <?php
     session_start();
-    require "db.php";
+    require_once "db.php";
+
+    //if not authenticated, redirect to main page
     if(!isAuthenticated()){
         header("location: market_login.php");
         exit;
     }
+
     $user = $_SESSION["market_user"];
     var_dump($user);
 
@@ -14,12 +17,12 @@
     $stmt->execute([$user["email"]]);
     $prodCnt = $stmt ->fetch()[0] ;
     $pageCnt = ceil($prodCnt /4);
-    var_dump($pageCnt);
+    // var_dump($pageCnt);
     $page= $_GET["page"] ?? 1;
     $firstItemIndex = ($page-1)*4;
-    var_dump($firstItemIndex);
+    // var_dump($firstItemIndex);
 
-    //if not authenticated, redirect to main page
+    //Get Query
     $order_by_param = "products.product_exp_date";
     $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
         AND market_user.email = ? ORDER BY $order_by_param LIMIT ?,4 ;";
@@ -57,15 +60,14 @@
         .market_product td{width: 120px;}
         .expired{background-color: lightcoral;}
         .safe{background-color: lightgreen;}
-        
     </style>
 </head>
 <body>
     <?php require_once "market_user_header.php"; ?>
-    <div class="alert">
+    <!-- <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
         <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-    </div>
+    </div> -->
     <p><a href="logout.php">Log out</a></p>
 
     <section class="market_products">

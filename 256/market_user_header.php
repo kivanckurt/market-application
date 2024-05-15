@@ -36,6 +36,7 @@ if(isset($_SESSION["market_user"])){
                 <td class="addProduct">
                     <a href="market_add_product.php">+</a>
                 </td>
+
                 <td class="userInfo">
                     <a href="market_edit_profile.php">
                     <div>
