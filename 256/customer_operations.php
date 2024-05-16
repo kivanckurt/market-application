@@ -40,6 +40,19 @@ function updateCart($product_id, $quantity) {
         }
     }
 }
+
+function incrementCartItemQuantity($product_id){
+    global $cart;
+    updateCart($product_id, 1);
+}
+
+function decrementCartItemQuantity($product_id){
+    global $cart;
+    updateCart($product_id, -1);
+    if($cart[$product_id] == 0){
+        removeFromCart($product_id);
+    }
+}
 function removeFromCart($item_id) {
     global $cart; 
    if(array_key_exists($item_id, $cart)) {
@@ -82,19 +95,22 @@ function updateItemQuantity($product_id, $quantity) {
     $stmt->execute([$quantity, $product_id]);
 }
 
+function isUpcomingProduct($product_id){
+    $t = time() + 60*60*24*4; // 4 days 
+    $p = getProductDetailed($product_id);
+    return strtotime($p["product_exp_date"]) < $t && strtotime($p["product_exp_date"]) > time();
+}
+
 function calculateTotal() {
     $total =0;
     global $cart;  
     foreach ($cart as $product_id => $count){
         $p = getProductDetailed($product_id);
-        // if(strtotime($p["product_exp_date"]) <= (time() - 60*60*24*5)){
-            //expire date upcoming product
-            if(getStock($product_id) < $count){
-                $error[] = "Not enough stock";
-                removeFromCart($product_id);
-            }
-            $total += $p["product_disc_price"] * $count;
-        // }
+         if(isUpcomingProduct($product_id)){
+            $total += $p["product_disc_price"] * $count;           
+         }else{
+            $total += $p["product_price"] * $count;
+         }
     }
 
     return $total;

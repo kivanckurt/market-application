@@ -1,5 +1,7 @@
 <?php
-session_start();
+    if(!isset($_SESSION)){
+        session_start();
+    }
 if(isset($_SESSION["customer_user"])){
     extract($_SESSION["customer_user"]);
     // var_dump($_SESSION["market_user"]);
@@ -46,16 +48,21 @@ require_once "db.php";
                     <div><span><a href="customer_main.php">xxmarkt</a></span></div>
                 </td>
                 <td>
-                    <form action="market_main.php" method="post">
-                        <input type="text" name="keyword" id="searchBar" placeholder="Apple">
+                    <form action="customer_main.php?" method="GET">
+                        <input type="text" name="keyword" id="searchBar" placeholder="Apple" 
+                        <?= isset($_GET["keyword"]) ? "value={$_GET['keyword']}" :""  ?>>
                     </form>
                 </td>
                 <td>
+                <a href="customer_cart.php">
+                    <div>
                     <?php
                         $cartInfo = getCartInformation();
                         // var_dump($cartInfo);
                         echo "{$cartInfo['total_price']} TL, {$cartInfo['item_cnt']} ";
                     ?>
+                    </div>
+                </a>
                 </td>
                 <td class="userInfo">
                     <a href="customer_edit_profile.php">

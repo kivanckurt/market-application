@@ -63,10 +63,10 @@
     </style>
 </head>
 <body>
-    <?php require_once "market_user_header.php"; ?>
+    <?php require "market_user_header.php"; ?>
     <!-- <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+        <strong>Danger!</strong> Indicates a dangerous or potentialheanegative action.
     </div> -->
     <p><a href="logout.php?user=0">Log out</a></p>
 

@@ -1,5 +1,7 @@
 <?php
-    require_once "customer_header.php";
+    if(!isset($_SESSION)){
+        session_start();
+    }
     require_once "db.php";
     require_once "customer_operations.php";
     //if not authenticated, redirect to main page
@@ -8,47 +10,62 @@
         exit;
     }
 
+    //generate shopping cart if it is not set
     if(!isset($_SESSION["customer_user"]["cart"])){
         $_SESSION["customer_user"]["cart"] = [];
     }
     $user = &$_SESSION["customer_user"];
-    $stocks=getAllProducts();
     $cart =$_SESSION["customer_user"]["cart"];
 
-    //generate shopping cart if it is not set
+    //get method operations
+    if($_SERVER["REQUEST_METHOD"]=="GET"){
+        var_dump($_GET);    
+        extract($_GET);
+        $keyword = $keyword ?? "";
+        $cleanedKeyword = str_replace('%', '', $keyword);
+        $formedKeyword ='%'.$cleanedKeyword.'%';
+        var_dump($keyword);
+        var_dump($formedKeyword);
+    }
 
 
-    $query ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email
-    AND market_user.email = ? AND products.product_exp_date> sysdate() AND stock>0;";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$user["email"]]);
-    $prodCnt = $stmt ->fetch()[0] ;
+    //getting product count for pagination operations
+    $queryProductCount ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email
+    AND market_user.city = ? AND products.product_exp_date> sysdate() AND stock>0 and product_title LIKE ?; ";
+    $stmt = $db->prepare($queryProductCount);
+    $stmt->execute([$user["city"],$formedKeyword]);
+    $prodCnt = $stmt ->fetch()[0];
     $pageCnt = ceil($prodCnt /4);
-    // var_dump($pageCnt);
     $page= $_GET["page"] ?? 1;
     $firstItemIndex = ($page-1)*4;
+    // var_dump($firstItemIndex);
+
 
     $getQuery = "SELECT * FROM products, market_user
     WHERE products.market_email = market_user.email AND market_user.city = ?
-    AND products.product_exp_date> sysdate() AND stock>0 
+    AND products.product_exp_date> sysdate() AND stock>0 AND product_title LIKE ?
     ORDER BY (CASE district WHEN ? THEN 1 ELSE 0 END) DESC,
     district DESC LIMIT ?,4; ";
-    var_dump($user);
+
     if($_SERVER["REQUEST_METHOD"]=="GET"){
         $stmt = $db->prepare($getQuery);
         $stmt->bindParam(1, $user["city"], PDO::PARAM_STR);
-        $stmt->bindParam(2, $user["district"], PDO::PARAM_STR);
-        $stmt->bindParam(3, $firstItemIndex, PDO::PARAM_INT);
+        $stmt->bindParam(2, $formedKeyword, PDO::PARAM_STR);
+        $stmt->bindParam(3, $user["district"], PDO::PARAM_STR);
+        $stmt->bindParam(4, $firstItemIndex, PDO::PARAM_INT);
         $stmt->execute();
         $products = $stmt ->fetchAll();
         // var_dump($products);
     }
+
     if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["add"])){
         echo "<h1>GET METHOD </h1>";
         $addCart = $_GET["add"];
         updateCart($addCart,1);
+        header("location: customer_main.php");
     }
     var_dump($cart);
+    require_once "customer_header.php";
 
 
     
@@ -185,17 +202,23 @@ if(isset($_SESSION["customer_user"])){
                     </td>
                 </tr>
             </table>
-
         </div>
     </div>
     <?php  }?>
-    <div>
+</section>
+<div>
     <?php
-        for($i=1; $i<$pageCnt+1; $i++){
-            echo "  <a href='?page=$i'>$i</a>  ";
+        var_dump($pageCnt);
+        if($pageCnt >1){
+            for($i=1; $i<$pageCnt+1; $i++){
+                if($keyword == ""){
+                echo "<a href='?page=$i'>$i</a> ";
+                }else{
+                    echo "<a href='?keyword=$formedKeyword&page=$i'>$i</a>";
+                }
+            }
         }
     ?>
     </div>
-</section>
 </body>
 </html>
