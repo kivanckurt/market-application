@@ -155,8 +155,7 @@ if(isset($_SESSION["customer_user"])){
 <h1><?=$user["remember"]?></h1>
 <h1><?=$user["profile"]?></h1> -->
 <p><a href="logout.php?user=1">Log out</a></p>
-<?php var_dump($_SESSION) ?>
-<?php var_dump($_COOKIE) ?>
+
 
 <section class="market_products">
     <h3> Products</h3>
