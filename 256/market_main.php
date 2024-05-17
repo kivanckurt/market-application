@@ -94,7 +94,7 @@
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
         <strong>Danger!</strong> Indicates a dangerous or potentialheanegative action.
     </div> -->
-    <p><a href="logout.php">Log out</a></p>
+    <p><a href="logout.php?user=0">Log out</a></p>
 
     <section class="market_products">
         <h3> Products</h3>
