@@ -1,21 +1,5 @@
 
 /* MARKET_USER_HEADER & CUSTOMER_HEADER CSS */
-header{
-    color:red;
-    text-align: center;
-    position: relative;
-    border: 1px solid black;
-    border-radius: 10px;
-}
-header .logo{ color: white; background-color: lightblue;}
-.logo a {text-decoration: none; color: blue; font-size: 30px; border: 1px solid black; border-radius: 10px;}
-#searchBar{border-radius: 10px; height: max-content; width: 300px;
-position: absolute; left: 200px; top: 10px;}
-#searchBar::placeholder{font-size: large;}
-.userInfo{position: absolute; right: 30px;}
-.userInfo div{border: 1px solid black; border-radius: 10px;}
-#profile{width: 30px;}
-.cartInfo{position: absolute; right: 150px; top: 10px;}
 
 /* ALERT BOX */
 .alert {

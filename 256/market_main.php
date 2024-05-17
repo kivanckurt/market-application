@@ -1,34 +1,40 @@
 <?php
     session_start();
-    require "db.php";
-    $page= $_GET["page"] ?? 1;
-    $firtItemIndex = ($page-1)*4;
+    require_once "db.php";
 
     //if not authenticated, redirect to main page
     if(!isAuthenticated()){
         header("location: market_login.php");
         exit;
     }
+
     $user = $_SESSION["market_user"];
-    $query_products ="SELECT products.product_id, product_title, product_price, product_disc_price,
-        product_exp_date, product_image, stock, market_name, market_user.email
-        FROM products, stocks, market_user
-        WHERE products.product_id = stocks.product_id
-        AND stocks.email = market_user.email
-        AND market_user.email = :email
-        -- AND products.product_exp_date< sysdate()
-        ORDER BY :order_by_param
-        LIMIT :firstItemIndex,4;
-        ";
+    var_dump($user);
+
+    //Getting the number of products & pages
+    $query ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email AND market_user.email = ?;";
+    $stmt = $db->prepare($query);
+    $stmt->execute([$user["email"]]);
+    $prodCnt = $stmt ->fetch()[0] ;
+    $pageCnt = ceil($prodCnt /4);
+    // var_dump($pageCnt);
+    $page= $_GET["page"] ?? 1;
+    $firstItemIndex = ($page-1)*4;
+    // var_dump($firstItemIndex);
+
+    //Get Query
+    $order_by_param = "products.product_exp_date";
+    $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
+        AND market_user.email = ? ORDER BY $order_by_param LIMIT ?,4 ;";
     if($_SERVER["REQUEST_METHOD"]=="GET"){
-        $order_by_param = "products.product_exp_date";
         $stmt = $db->prepare($query_products);
-        $stmt->bindParam(":firstItemIndex",$firtItemIndex, PDO::PARAM_INT);
-        $stmt->bindParam(":order_by_param",$order_by_param);
-        $stmt->bindParam(":email",$user["email"]);
+        $stmt->bindParam(1, $user["email"], PDO::PARAM_STR);
+        $stmt->bindParam(2, $firstItemIndex, PDO::PARAM_INT);
         $stmt->execute();
         $products = $stmt ->fetchAll();
     }
+
+
 
 
 ?>
@@ -54,16 +60,15 @@
         .market_product td{width: 120px;}
         .expired{background-color: lightcoral;}
         .safe{background-color: lightgreen;}
-        
     </style>
 </head>
 <body>
-    <?php require_once "market_user_header.php"; ?>
-    <div class="alert">
+    <?php require "market_user_header.php"; ?>
+    <!-- <div class="alert">
         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
-        <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-    </div>
-    <p><a href="logout.php">Log out</a></p>
+        <strong>Danger!</strong> Indicates a dangerous or potentialheanegative action.
+    </div> -->
+    <p><a href="logout.php?user=0">Log out</a></p>
 
     <section class="market_products">
         <h3> Products</h3>
@@ -102,7 +107,7 @@
                         </td>
                         <td class="last">
                             <p><a href="market_remove_product.php?product_id=<?=$p["product_id"] ?>"><span class="remove">Remove</span></a></p>
-                            <p><a href="market_edit_product.php?product_id=<?=$p["product_id"] ?>"><span class="edit">Edit</span></a></p>
+                            <span><a href="market_edit_product.php?product_id=<?=$p["product_id"] ?>"><span class="edit">Edit</span></a></span>
                         </td>
                     </tr>
                 </table>
@@ -110,6 +115,14 @@
             </div>
         </div>
         <?php  }?>
+        <div>
+        <?php
+            for($i=1; $i<$pageCnt+1; $i++){
+                echo "  <a href='?page=$i'>$i</a>  ";
+            }
+        ?>
+        </div>
+
     </section>
 
 </body>
