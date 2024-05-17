@@ -70,29 +70,34 @@
         <div class="shape"></div>
     </div>
     <form action="" method="post">
-        <table>
-            <tr>
-                <td>Email: </td>
-                <td><input type="text" name="email" id="" value=<?= isset($email) ? "$email" : "" ?>></td>
-                <?php if (isset($error["email"])){ ?>
-                <td>Wrong Email</td>
-                <?php  }?>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td><input type="password" name="password" id=""></td>
-                <?php if (isset($error["password"])){ ?>
-                <td><?=$error["password"]?></td>
-                <?php  }?>
-            </tr>
-            <tr>
-                <td><button type="submit">Log In</button></td>
-                <td>Remember Me<input type="checkbox" name="rememberme" id="" <?= isset($rememberme) ? "checked" : "" ?>></td>
-            </tr>
-            <tr>
-                <td><p><a href="market_register.php">Register</a></p></td>
-            </tr>
-        </table>
+    <h3>Login Here</h3>
+        <label for="email">Email</label>
+        <input type="text" name="email" id="" value=<?= isset($email) ? "$email" : "" ?>>
+        <?php if (isset($error["email"])){ ?>
+        <p><?=$error["email"]?></p>
+        <?php  }?>
+        
+        <label for="password">Password</label>
+        <input type="password" name="password" id="">
+        <?php if (isset($error["password"])){ ?>
+        <p><?=$error["password"]?></p>
+        <?php  }?>
+
+        <div class="rebme">
+            <span>Remember Me</span>
+            <div class="checkbox-wrapper-31">
+            <input type="checkbox" name="rememberme" id="" <?= isset($rememberme) ? "checked" : "" ?>>
+            <svg viewBox="0 0 35.6 35.6">
+                <circle class="background" cx="35.6" cy="35.6" r="17.8"></circle>
+                <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+            </svg>
+            </div>
+        </div>
+    
+        <button type="submit">Log In</button>
+        <p class="register">Don't have an account? <a href="market_register.php"><span>Sign up</span></a></p>
+        
     </form>
 </body>
 </html>

@@ -91,7 +91,7 @@
             $_SESSION["ok"]=true;
             }
             else{
-                var_dump($error);
+                
             }
         }
     }
@@ -101,13 +101,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="marketregisterpage.css">
     <title>Document</title>
 </head>
 <body>
     
-    <h2>Market Registration</h2>
-    <?php if (isset($_SESSION["ok"]) && $_SESSION["ok"]){ ?>
+        <?php if (isset($_SESSION["ok"]) && $_SESSION["ok"]){ ?>
     <form action="" method="post">
+    <h3>Market Registration</h3>
     <table>
         <tr>
             <td>CODE: </td>
@@ -126,53 +127,55 @@
     <?= exit;?>
     <?php  }?>
     <form action="" method="post">
-    <table>
-        <tr>
-            <td>Email: </td>
-            <td><input type='text' name='email' id='' value="<?= isset($email) ? filter_var($email, FILTER_SANITIZE_FULL_SPECIAL_CHARS) : "" ?>"></td>
-            <?php if (isset($error["email"])){ ?>
-                <td><?=$error["email"]?></td>
-            <?php  }?>
-        </tr>
-        <tr>
-            <td>Market Name: </td>
-            <td><input type='text' name='market_name' id='' value=<?= isset($market_name) ? "$market_name" : "" ?>></td>
-            <?php if (isset($error["market_name"])){ ?>
-            <td><?=$error["market_name"]?></td>
-            <?php  }?>
-        </tr>
-        <tr>
-            <td>Password: </td>
-            <td><input type='password' name='password' id=''></td>
-            <?php if (isset($error["password"])){ ?>
-            <td><?=$error["password"]?></td>
-            <?php  }?>
-        </tr>
-        <tr>
-            <td>City: </td>
-            <td><input type='text' name='city' id='' value="<?= isset($city) ? "$city" : "" ?>"></td>
-            <?php if (isset($error["city"])){ ?>
-            <td><?=$error["city"]?></td>
-            <?php  }?>
-        </tr>
-            <tr>
-            <td>District:</td>
-            <td><input type='text' name='district' id='' value=<?= isset($district) ? "$district" : "" ?>></td>
-            <?php if (isset($error["district"])){ ?>
-            <td><?=$error["district"]?></td>
-            <?php  }?>
-        </tr>
-            <tr>
-            <td>Address: </td>
-            <td><input type='text' name='address' id='' value=<?= isset($address) ? "$address" : "" ?>></td>
-            <?php if (isset($error["address"])){ ?>
-            <td><?=$error["address"]?></td>
-            <?php  }?>
-        </tr>
-            <tr>
-            <td><button type='submit'>Register</button></td>
-        </tr>
-        </table>
+        <h3>Market Registration</h3>
+
+        <label for="email">Email</label>
+        <input type='text' name='email' id='' value="<?= isset($email) ? filter_var($email, FILTER_SANITIZE_STRING) : "" ?>">
+
+
+        <label for="market_name">Market Name: </label>
+        <input type='text' name='market_name' id='' value=<?= isset($market_name) ? "$market_name" : "" ?>>
+        
+     
+        <label for="password">Password</label>
+        <input type='password' name='password' id='' value="<?= isset($password) ? filter_var($password, FILTER_SANITIZE_STRING) : "" ?>">
+
+        <label for="city">City</label>
+        <input type='text' name='city' id='' value="<?= isset($city) ? filter_var($city, FILTER_SANITIZE_STRING) : "" ?>">
+
+
+        <label for="district">District</label>
+        <input type='text' name='district' id='' value="<?= isset($district) ? filter_var($district, FILTER_SANITIZE_STRING) : "" ?>">
+            
+
+        <label for="address">Address</label>
+        <input type='text' name='address' id='' value="<?= isset($address) ? filter_var($address, FILTER_SANITIZE_STRING) : "" ?>">
+
+
+        <button type="submit">Register</button> 
     </form>
+
+    <?php if (isset($error)){ ?>
+        <div class="errort">
+            <?php if (isset($error["email"])){ ?>
+                <p><?=$error["email"]?></p>
+            <?php  }?>
+            <?php if (isset($error["market_name"])){ ?>
+                <p><?=$error["market_name"]?></p>
+            <?php  }?>
+            <?php if (isset($error["password"])){ ?>
+                <p><?=$error["password"]?></p>
+            <?php  }?>
+            <?php if (isset($error["city"])){ ?>
+                <p><?=$error["city"]?></p>
+            <?php  }?>
+            <?php if (isset($error["district"])){ ?>
+                <p><?=$error["district"]?></p>
+            <?php  }?>
+            <?php if (isset($error["address"])){ ?>
+                <p><?=$error["address"]?></p>
+            <?php  }?>
+        </div>
+    <?php  }?>
 </body>
 </html>
