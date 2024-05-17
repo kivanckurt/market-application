@@ -1,0 +1,151 @@
+@import url("https://fonts.googleapis.com/css?family=Heebo:900|Roboto|Satisfy&display=swap");
+
+body {
+  margin: 0;
+  background-color: #060431;
+  font-family: "Roboto", sans-serif;
+}
+
+
+h1 {
+  font-weight: normal;
+  margin: 0.1em;
+}
+
+.Hero {
+  color: white;
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+  justify-content: center;
+}
+
+.Hero__content {
+  margin: 40vh auto auto 10vw;
+  width: 50%;
+}
+
+.Hero__title {
+  font-family: "Heebo", sans-serif;
+  font-weight: 900;
+  margin: 0;
+  text-shadow: 0px 0px 8px black;
+  font-size: 3em;
+  line-height: 1em;
+}
+
+.Hero__subtitle {
+  opacity: 0.85;
+  margin-top: 0.5em;
+  text-shadow: 0px 0px 8px black;
+  font-size: 1.5em;
+}
+
+.Hero__action {
+  height: 2em;
+  border-radius: 2em;
+  background-color: #c49000;
+  color: white;
+  border: none;
+  padding: 0.4em 2em;
+  box-shadow: 0px 0px 8px black;
+  position: relative;
+  width: 8em;
+  cursor: pointer;
+  margin: 2em;
+
+  
+}
+
+@media (max-width: 700px) {
+  .Hero__content {
+    width: 90%;
+    margin: 40vh 2em auto 2em;
+  }
+}
+
+.Hero__action:hover {
+  animation: callToAction 1500ms ease-in infinite;
+}
+
+@keyframes callToAction {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.07);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+  60% {
+    transform: scale(1.07);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.Hero__actionText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  font-family: "Heebo", sans-serif;
+  font-size: 1.1em;
+  transform: translate(-50%, -50%);
+  text-shadow: 0px 0px 6px rgba(255, 255, 255, 0.2);
+}
+
+@media (max-height: 500px) {
+  .Hero__title {
+    font-size: 2em;
+  }
+
+  .Hero__subtitle {
+    font-size: 1em;
+  }
+
+  .Hero__action {
+    height: 1.4em;
+    border-radius: 1.4em;
+    width: 4.5em;
+  }
+
+  .Hero__actionText {
+    font-size: 0.9em;
+  }
+}
+
+.Hero__image {
+  display: inline-block;
+  position: absolute;
+  z-index: -10;
+  height: 100vh;
+  width: 100%;
+  background-color: red;
+  background-image: url("images/mainpageBG.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.Hero__mask {
+  position: absolute;
+  z-index: -8;
+  height: 100%;
+  width: 100%;
+  background-image: linear-gradient(#180047, #060231 50%);
+  mix-blend-mode: multiply;
+  opacity: 0.5;
+}
+
+.Hero__snowfall {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: -6;
+  opacity: 0.75;
+}

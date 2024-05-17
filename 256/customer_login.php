@@ -51,27 +51,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="customer_login.css">
     <title>Document</title>
 </head>
 <body>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
     <form action="" method="post">
-        <table>
-            <tr>
-                <td>Email: </td>
-                <td><input type="text" name="email" id=""></td>
-            </tr>
-            <tr>
-                <td>Password:</td>
-                <td><input type="password" name="password" id=""></td>
-            </tr>
-            <tr>
-                <td><button type="submit">Log In</button></td>
-                <td>Remember Me<input type="checkbox" name="rememberme" id=""></td>
-            </tr>
-            <tr>
-                <td><p><a href="customer_register.php">Register</a></p></td>
-            </tr>
-        </table>
+        <h3>Login Here</h3>
+
+        <label for="username">Email</label>
+        <input type="text" placeholder="Email" name="email" id="">
+
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" name="password" id="">
+
+        <div class="rebme">
+            <span>Remember Me</span>
+            <div class="checkbox-wrapper-31">
+                <input type="checkbox" name="rememberme" id=""/>
+                <svg viewBox="0 0 35.6 35.6">
+                    <circle class="background" cx="35.6" cy="35.6" r="17.8"></circle>
+                    <circle class="stroke" cx="17.8" cy="17.8" r="14.37"></circle>
+                    <polyline class="check" points="11.78 18.12 15.55 22.23 25.17 12.87"></polyline>
+                </svg>
+            </div>
+        </div>
+        <button type="submit">Log In</button>
+        
+        
+        
+
     </form>
 </body>
 </html>
