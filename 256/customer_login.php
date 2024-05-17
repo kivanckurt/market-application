@@ -80,10 +80,10 @@
             </div>
         </div>
         <button type="submit">Log In</button>
-        
-        
-        
-
+        <div id="register">
+            <p class="register">Don't have an account? <a href="customer_register.php"><span>Sign up</span></a></p>
+        </div>
     </form>
+    
 </body>
 </html>

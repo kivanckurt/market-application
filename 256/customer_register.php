@@ -23,42 +23,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="customer_register.css">
     <title>Document</title>
 </head>
 <body>
     
-    <h2>Customer Registration</h2>
-
     <form action="" method="post">
-    <table>
-        <tr>
-            <td>Email: </td>
-            <td><input type='text' name='email' id=''></td>
-        </tr>
-        <tr>
-            <td>Fullname: </td>
-            <td><input type='text' name='fullname' id=''></td>
-        </tr>
-        <tr>
-            <td>Password: </td>
-            <td><input type='password' name='password' id=''></td>
-        </tr>
-        <tr>
-            <td>City: </td>
-            <td><input type='text' name='city' id=''></td>
-        </tr>
-            <tr>
-            <td>District:</td>
-            <td><input type='text' name='district' id=''></td>
-        </tr>
-            <tr>
-            <td>Address: </td>
-            <td><input type='text' name='address' id=''></td>
-        </tr>
-            <tr>
-            <td><button type='submit'>Register</button></td>
-        </tr>
-        </table>
+        <h3>Customer Registration</h3>
+
+        <label for="username">Email</label>
+        <input type="text" placeholder="Email" name="email" id="">
+
+        <label for="fullname">Full Name</label>
+        <input type="text" placeholder="Name Surname" name="fullname" id="">
+
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" name="password" id="">
+
+        <label for="city">City</label>
+        <input type="text" placeholder="City" name="city" id="">
+
+        <label for="district">District</label>
+        <input type="text" placeholder="District" name="district" id="">
+
+        <label for="address">Address</label>
+        <input type="text" placeholder="Address" name="address" id="">
+
+        <button type="submit">Register</button>
     </form>
 </body>
 </html>
