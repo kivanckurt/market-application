@@ -94,11 +94,7 @@
                 $_SESSION["ok"]=true;
             }
             else{
-                var_dump($error);
-                var_dump($fullname);
-                var_dump($city);
-                var_dump($district);
-                var_dump($address);
+                
             }
                
         }
@@ -115,9 +111,9 @@
 </head>
 <body>
     
-    <h2>Customer Registration</h2>
     <?php if (isset($_SESSION["ok"]) && $_SESSION["ok"]){ ?>
     <form action="" method="post">
+    <h3>Customer Registration</h3>
     <table>
         <tr>
             <td>CODE: </td>
@@ -136,54 +132,61 @@
     <?= exit;?>
     <?php  }?>
 
+
     <form action="" method="post">
-    <table>
-        <tr>
-            <td>Email: </td>
-            <td><input type='text' name='email' id='' value="<?= isset($email) ? filter_var($email, FILTER_SANITIZE_STRING) : "" ?>"></td>
-            <?php if (isset($error["email"])){ ?>
-                <td><?=$error["email"]?></td>
-            <?php  }?>
-        </tr>
-        <tr>
-            <td>Fullname: </td>
-            <td><input type='text' name='fullname' id='' value=<?= isset($fullname) ? "$fullname" : "" ?>></td>
-            <?php if (isset($error["fullname"])){ ?>
-            <td><?=$error["fullname"]?></td>
-            <?php  }?>
-        </tr>
-        <tr>
-            <td>Password: </td>
-            <td><input type='password' name='password' id='' ></td>
-            <?php if (isset($error["password"])){ ?>
-            <td><?=$error["password"]?></td>
-            <?php  }?>
-        </tr>
-        <tr>
-            <td>City: </td>
-            <td><input type='text' name='city' id='' value="<?= isset($city) ? "$city" : "" ?>"></td>
-            <?php if (isset($error["city"])){ ?>
-            <td><?=$error["city"]?></td>
-            <?php  }?>
-        </tr>
-            <tr>
-            <td>District:</td>
-            <td><input type='text' name='district' id='' value=<?= isset($district) ? "$district" : "" ?>></td>
-            <?php if (isset($error["district"])){ ?>
-            <td><?=$error["district"]?></td>
-            <?php  }?>
-        </tr>
-            <tr>
-            <td>Address: </td>
-            <td><input type='text' name='address' id='' value=<?= isset($address) ? "$address" : "" ?>></td>
-            <?php if (isset($error["address"])){ ?>
-            <td><?=$error["address"]?></td>
-            <?php  }?>
-        </tr>
-            <tr>
-            <td><button type='submit'>Register</button></td>
-        </tr>
-        </table>
+        <h3>Customer Registration</h3>
+
+        <label for="email">Email</label>
+        <input type='text' name='email' id='' value="<?= isset($email) ? filter_var($email, FILTER_SANITIZE_STRING) : "" ?>">
+            
+
+        <label for="fullname">Full Name</label>
+        <input type='text' name='fullname' id='' value="<?= isset($fullname) ? filter_var($fullname, FILTER_SANITIZE_STRING) : "" ?>">
+            
+
+        <label for="password">Password</label>
+        <input type='password' name='password' id='' value="<?= isset($password) ? filter_var($password, FILTER_SANITIZE_STRING) : "" ?>">
+           
+
+        <label for="city">City</label>
+        <input type='text' name='city' id='' value="<?= isset($city) ? filter_var($city, FILTER_SANITIZE_STRING) : "" ?>">
+
+
+        <label for="district">District</label>
+        <input type='text' name='district' id='' value="<?= isset($district) ? filter_var($district, FILTER_SANITIZE_STRING) : "" ?>">
+            
+
+        <label for="address">Address</label>
+        <input type='text' name='address' id='' value="<?= isset($address) ? filter_var($address, FILTER_SANITIZE_STRING) : "" ?>">
+
+
+        <button type="submit">Register</button> 
+
+    
     </form>
+    <?php if (isset($error)){ ?>
+        <div class="errort">
+            <?php if (isset($error["email"])){ ?>
+                <p><?=$error["email"]?></p>
+            <?php  }?>
+            <?php if (isset($error["fullname"])){ ?>
+                <p><?=$error["fullname"]?></p>
+            <?php  }?>
+            <?php if (isset($error["password"])){ ?>
+                <p><?=$error["password"]?></p>
+            <?php  }?>
+            <?php if (isset($error["city"])){ ?>
+                <p><?=$error["city"]?></p>
+            <?php  }?>
+            <?php if (isset($error["district"])){ ?>
+                <p><?=$error["district"]?></p>
+            <?php  }?>
+            <?php if (isset($error["address"])){ ?>
+                <p><?=$error["address"]?></p>
+            <?php  }?>
+        </div>
+    <?php  }?>
+
+   
 </body>
 </html>

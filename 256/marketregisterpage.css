@@ -6,7 +6,7 @@
     box-sizing: border-box;
 }
 body{
-    background-image: url("images/loginBG.jpg");
+    background-image: url("images/marketloginBG.jpg");
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
@@ -29,30 +29,38 @@ body{
 }
 .shape:first-child{
     background: linear-gradient(
-        #1845ad,
-        #23a2f6
+        #ad186a,
+        #f6237e
     );
-    left: -80px;
+    right: -60px;
     top: -80px;
 }
 .shape:last-child{
     background: linear-gradient(
         to right,
-        #ff512f,
-        #f09819
+        #2fff4b,
+        #19f08c
     );
-    right: -30px;
+    left: -30px;
     bottom: -80px;
 }
 
-p{
-  margin: 10px;
+.errort{
+  width: max-content;
+  border: #ff512f 2px solid;
+  background-color: rgba(255, 255, 255, 0.3);
+  padding: 5px;
+  position: absolute;
+  border-radius: 20px;
+  top: 20px;
+  left: 20px;
+  display: block;
   text-align: center;
 }
 
 form{
     height: max-content;
-    width: 400px;
+    width: 500px;
     background-color: rgba(255,255,255,0.13);
     position: absolute;
     transform: translate(-50%,-50%);
