@@ -54,7 +54,7 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
                 </td>
                 <td>
                     <form action="market_main.php" method="GET">
-                        <input type="text" name="keyword" id="searchBar" placeholder="Apple" value="<?=$keyword?>">
+                        <input type="text" name="keyword" id="searchBar" placeholder="Apple" value="<?=htmlspecialchars($keyword)?>">
                     </form>
                 </td>
                 <td class="addProduct">
@@ -70,6 +70,7 @@ if($_SERVER["REQUEST_METHOD"]=="GET"){
                     </a>
                 </td>
             </tr>
+
         </table>
     </header>
 </body>
