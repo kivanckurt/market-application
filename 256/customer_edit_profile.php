@@ -51,6 +51,7 @@
         validateCustomerUser($email, $user["password"], $user);
         $_SESSION["customer_user"]=$user;
         $_SESSION["customer_user"]["cart"]=$cart;
+        $message="Informations Updated";
       }
       }
     }
@@ -66,22 +67,20 @@
       at least one digit
       password lenght must be between 8-20
       */
-    }
-    if(empty($error)){
-    
-    // echo "<h1>READS PASSWORDS</h1>";
+    }else{
+      // echo "<h1>READS PASSWORDS</h1>";
     $password_old = $user["password"];
     if(verifyPassword($password, $password_old)){      
       //password verified
       setCustomerPassword($user, $password_new);
-      $message="password updated";
-      header("location: logout.php");
+      $message="Password Updated";
+      //header("location: logout.php");
     }else{
-      $message="Password does not match with old password";
       $error["password"]="Old password is not correct";
-      header("location: ?message=$message");
     }
+
     }
+    
   }
 
 ?>
@@ -170,6 +169,13 @@
                 <p><?=$error["address"]?></p>
             <?php  }?>
         </div>
+    <?php  }?>
+    <?php if (isset($error)){ ?>
+      <div class="message">
+      <?php if (isset($message)){ ?>
+                <p><?=$message?></p>
+            <?php  }?>
+      </div>
     <?php  }?>
     </section>
 </body>
