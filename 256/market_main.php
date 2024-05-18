@@ -23,9 +23,11 @@
     }
 
     //Getting the number of products & pages
-    $query ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email AND market_user.email = ?;";
+    $query ="SELECT COUNT(*) FROM products, market_user 
+    where products.market_email = market_user.email
+    AND market_user.email = ? AND product_title LIKE ?;";
     $stmt = $db->prepare($query);
-    $stmt->execute([$user["email"]]);
+    $stmt->execute([$user["email"],$formedKeyword]);
     $prodCnt = $stmt ->fetch()[0] ;
     $pageCnt = ceil($prodCnt /4);
     // var_dump($pageCnt);
@@ -33,15 +35,15 @@
     $firstItemIndex = ($page-1)*4;
     // var_dump($firstItemIndex);
 
-    $getQuery = "SELECT * FROM products, market_user
-    WHERE products.market_email = market_user.email and market_user.email = ?
-    AND stock>0 AND product_title LIKE ?
+    $getQuery = "SELECT * FROM products, market_user 
+    where products.market_email = market_user.email
+    AND market_user.email = ? AND product_title LIKE ?
     ORDER BY product_exp_date LIMIT ?,4; ";
 
     if($_SERVER["REQUEST_METHOD"]=="GET"){
         $stmt = $db->prepare($getQuery);
         $stmt->bindParam(1, $user["email"], PDO::PARAM_STR);
-        $stmt->bindParam(2, $formedKeyword, PDO::PARAM_STR);
+        $stmt->bindParam(2, $formedKeyword);
         $stmt->bindParam(3, $firstItemIndex, PDO::PARAM_INT);
         $stmt->execute();
         $products = $stmt ->fetchAll();
