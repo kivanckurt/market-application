@@ -33,11 +33,11 @@
         $orderBy = isset($orderBy)? $orderBy : "product_exp_date";
         $sort = isset($sort) ? $sort : "desc";
         $queryFilter = isset($filter) ? $ar[$filter] : "";
-        // if(!array_key_exists($filter,$ar)){
-        //   //injection
-        //   header("location: mal.php");
-        //   exit;
-        // }
+        if(isset($_GET["filter"]) && !array_key_exists($filter,$ar) ){
+          //injection
+          header("location: mal.php");
+          exit;
+        }
         $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
             AND market_user.email = ? and product_title LIKE ? $queryFilter ORDER BY $orderBy $sort;";
         $stmt = $db->prepare($query_products);
