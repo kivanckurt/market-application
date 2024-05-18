@@ -59,7 +59,7 @@
 </head>
 <body>
     <?php require "market_user_header.php"?>
-    <section>
+    <section class="product">
     <div style="margin: auto;  width: 90%; padding: 50px; ">
 
     <form action="" method="post" enctype="multipart/form-data">
