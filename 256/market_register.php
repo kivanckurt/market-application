@@ -48,13 +48,16 @@
         else{
             $_SESSION["post"]=$_POST;
             extract($_POST);
-           
-            $market_name=htmlspecialchars($market_name);
-            $city=htmlspecialchars($city);
-            $district=htmlspecialchars($district);
-            $address=htmlspecialchars($address);
-            $email=htmlspecialchars($email);
-
+            $market_name=filter_var($market_name, FILTER_SANITIZE_STRING);
+            $market_name=filter_var($market_name, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $city=filter_var($city, FILTER_SANITIZE_STRING);
+            $city=filter_var($city, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $district=filter_var($district, FILTER_SANITIZE_STRING);
+            $district=filter_var($district, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $address=filter_var($address, FILTER_SANITIZE_STRING);
+            $address=filter_var($address, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            $email=filter_var($email, FILTER_SANITIZE_STRING);
+            $email=filter_var($email, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
             if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
             $error["email"]="Email is in a incorrect format";
             }
@@ -103,7 +106,7 @@
 </head>
 <body>
     
-    <?php if (isset($_SESSION["ok"]) && $_SESSION["ok"]){ ?>
+        <?php if (isset($_SESSION["ok"]) && $_SESSION["ok"]){ ?>
     <form action="" method="post">
     <h3>Market Registration</h3>
     <table>
