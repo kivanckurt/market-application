@@ -183,9 +183,16 @@ function customer_register($email,$password,$fullname,$city,$district,$address){
     $stmt->execute([$email,sha1($password),$fullname,$city,$district,$address]);
 }
 
-function getAllProducts(){
-    global $db;
-    $stmt = $db->prepare("SELECT * FROM products") ;
-    $stmt->execute() ;
-    return $stmt->fetchAll() ;
+function updateCustomerInfo($id, $email, $name, $city, $district, $address){
+    // var_dump($email,$address,$city,$district, $market_name);
+    global $db ;
+    $stmt = $db->prepare("UPDATE customers set name = ?, city=?, district=?, `address`=? ,email = ? where customer_id=?") ;
+    $stmt->execute([$name,$city,$district,$address,$email,$id]);
+}
+
+function setCustomerPassword($user, $password_new){
+    global $db ;
+    $id = $user["customer_id"];
+    $stmt = $db->prepare("update customers set password = ? where customer_id = ?") ;
+    $stmt->execute([sha1($password_new), $id]);
 }

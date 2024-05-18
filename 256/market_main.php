@@ -11,16 +11,44 @@
     $user = $_SESSION["market_user"];
     var_dump($user);
 
+    //get method operations
+    if($_SERVER["REQUEST_METHOD"]=="GET"){
+        // var_dump($_GET);    
+        extract($_GET);
+        $keyword = $keyword ?? "";
+        $cleanedKeyword = str_replace('%', '', $keyword);
+        $formedKeyword ='%'.$cleanedKeyword.'%';
+        // var_dump($keyword);
+        // var_dump($formedKeyword);
+    }
+
     //Getting the number of products & pages
-    $query ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email AND market_user.email = ?;";
+    $query ="SELECT COUNT(*) FROM products, market_user 
+    where products.market_email = market_user.email
+    AND market_user.email = ? AND product_title LIKE ?;";
     $stmt = $db->prepare($query);
-    $stmt->execute([$user["email"]]);
+    $stmt->execute([$user["email"],$formedKeyword]);
     $prodCnt = $stmt ->fetch()[0] ;
     $pageCnt = ceil($prodCnt /4);
     // var_dump($pageCnt);
     $page= $_GET["page"] ?? 1;
     $firstItemIndex = ($page-1)*4;
     // var_dump($firstItemIndex);
+
+    $getQuery = "SELECT * FROM products, market_user 
+    where products.market_email = market_user.email
+    AND market_user.email = ? AND product_title LIKE ?
+    ORDER BY product_exp_date LIMIT ?,4; ";
+
+    if($_SERVER["REQUEST_METHOD"]=="GET"){
+        $stmt = $db->prepare($getQuery);
+        $stmt->bindParam(1, $user["email"], PDO::PARAM_STR);
+        $stmt->bindParam(2, $formedKeyword);
+        $stmt->bindParam(3, $firstItemIndex, PDO::PARAM_INT);
+        $stmt->execute();
+        $products = $stmt ->fetchAll();
+        // var_dump($products);
+    }
 
     //Get Query
     $order_by_param = "products.product_exp_date";
@@ -115,15 +143,15 @@
             </div>
         </div>
         <?php  }?>
-        <div>
+
+
+    </section>
+    <div>
         <?php
             for($i=1; $i<$pageCnt+1; $i++){
                 echo "  <a href='?page=$i'>$i</a>  ";
             }
         ?>
         </div>
-
-    </section>
-
 </body>
 </html>
