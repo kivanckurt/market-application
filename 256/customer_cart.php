@@ -243,7 +243,7 @@
                 </td>
                 <td>
                     <div class="actions">
-                        <a href="?add=<?= $p["product_id"] ?>" class="quantity-adjust">+</a>
+                        <a href="?add=<?= $p["product_id"] ?>"  <?= $count >= getStock($productId) ? " hidden" : 'class="quantity-adjust"' ?>>+</a>
                         <span class="quantity"><?= $count ?></span>
                         <a href="?decrease=<?= $p["product_id"] ?>" class="quantity-adjust">-</a>
                     </div>

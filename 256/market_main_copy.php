@@ -1,7 +1,6 @@
 <?php
     session_start();
     require_once "db.php";
-
     //if not authenticated, redirect to main page
     if(!isAuthenticated()){
         header("location: market_login.php");
@@ -12,25 +11,32 @@
     //var_dump($user);
 
     //Getting the number of products & pages
-    $query ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email AND market_user.email = ?;";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$user["email"]]);
-    $prodCnt = $stmt ->fetch()[0] ;
-    $pageCnt = ceil($prodCnt /4);
-    // var_dump($pageCnt);
-    $page= $_GET["page"] ?? 1;
-    $firstItemIndex = ($page-1)*4;
+    // $query ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email AND market_user.email = ?;";
+    // $stmt = $db->prepare($query);
+    // $stmt->execute([$user["email"]]);
+    // $prodCnt = $stmt ->fetch()[0] ;
+    // $pageCnt = ceil($prodCnt /4);
+    // // var_dump($pageCnt);
+    // $page= $_GET["page"] ?? 1;
+    // $firstItemIndex = ($page-1)*4;
     // var_dump($firstItemIndex);
 
     //Get Query
-    $order_by_param = "products.product_exp_date";
-    $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
-        AND market_user.email = ? ORDER BY $order_by_param LIMIT ?,4 ;";
+
+
     if($_SERVER["REQUEST_METHOD"]=="GET"){
+        extract($_GET);
+        $ar = ["active" => "and product_exp_date > CURDATE()","expired" => "and product_exp_date <= CURDATE()", "all" => ""];
+        $orderBy = isset($orderBy)? $orderBy : "product_exp_date";
+        $sort = isset($sort) ? $sort : "desc";
+        $filter = isset($filter) ? $ar[$filter] : "";
+        $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
+            AND market_user.email = ? $filter ORDER BY $orderBy $sort;";
         $stmt = $db->prepare($query_products);
         $stmt->bindParam(1, $user["email"], PDO::PARAM_STR);
-        $stmt->bindParam(2, $firstItemIndex, PDO::PARAM_INT);
-        $stmt->execute();
+        if(in_array($sort,["asc","desc"])){
+          $stmt->execute();
+        }
         $products = $stmt ->fetchAll();
     }
 
@@ -85,18 +91,20 @@
           <button class="action-button filter jsFilter"><span>Filter</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
           <div class="filter-menu">
             <label>Status</label>
-            <select>
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Expired</option>
+            <form action="" method="get">
+            <select name="filter">
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="expired">Expired</option>
             </select>
             <div class="filter-menu-buttons">
+              <button class="filter-button apply" type="submit">
+                Apply
+              </button>
               <button class="filter-button reset">
                 Reset
               </button>
-              <button class="filter-button apply">
-                Apply
-              </button>
+              </form>
             </div>
           </div>
         </div>
@@ -110,27 +118,25 @@
     </div>
     <div class="products-area-wrapper tableView">
       <div class="products-header">
-        <div class="product-cell image">
-          Items
-          <button class="sort-button">
+        <div class="product-cell image"> Items<a href="?orderBy=product_title&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
-          </button>
+          </button></a>
         </div>
-        <div class="product-cell price">Price<button class="sort-button">
+        <div class="product-cell price">Price<a href="?orderBy=product_price&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
-          </button></div>
-        <div class="product-cell status-cell">Status<button class="sort-button">
+          </button></div></a>
+        <div class="product-cell status-cell">Status<a href="?orderBy=product_exp_date&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
-          </button></div>
-        <div class="product-cell sales">Expiration Date<button class="sort-button">
+          </button></div></a>
+        <div class="product-cell sales">Expiration Date<a href="?orderBy=product_exp_date&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
-          </button></div>
-        <div class="product-cell category">Discounted Price<button class="sort-button">
+          </button></div></a>
+        <div class="product-cell category">Discounted Price<a href="?orderBy=product_disc_price&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
-          </button></div>
-        <div class="product-cell stock">Stock<button class="sort-button">
+          </button></div></a>
+        <div class="product-cell stock">Stock<a href="?orderBy=stock&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
-          </button></div>
+          </button></div></a>
 
       </div>
       <?php foreach ($products as $p){ ?>

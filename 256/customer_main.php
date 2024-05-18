@@ -28,6 +28,24 @@
         //var_dump($formedKeyword);
     }
 
+    if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["decrease"])){
+        $decrease = $_GET["decrease"];
+        decrementCartItemQuantity($decrease);
+        header("location: ?");
+    }
+
+    if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["increment"])){
+        $add = $_GET["increment"];
+        incrementCartItemQuantity($add);
+        header("location: ?");
+    }
+
+    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["add"])){
+        echo "<h1>GET METHOD </h1>";
+        $addCart = $_GET["add"];
+        updateCart($addCart,1);
+        header("location: customer_main.php");
+    }
 
     //getting product count for pagination operations
     $queryProductCount ="SELECT COUNT(*) FROM products, market_user where products.market_email = market_user.email
@@ -58,12 +76,7 @@
         // var_dump($products);
     }
 
-    if($_SERVER["REQUEST_METHOD"]=="GET" && isset($_GET["add"])){
-        echo "<h1>GET METHOD </h1>";
-        $addCart = $_GET["add"];
-        updateCart($addCart,1);
-        header("location: customer_main.php");
-    }
+
     //var_dump($cart);
     require_once "customer_header.php";
 
@@ -252,6 +265,11 @@ body {
     background: var(--secondary-color);
 }
 
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
 </style>
 
 
@@ -303,7 +321,15 @@ body {
             <p class="expiration_date">Expires on: <?= $p["product_exp_date"] ?></p>
             <p class="stock">Stock: <?= $p["stock"] ?></p>
             <p class="district">District: <?= $district ?></p>
+            <?php if(isInCart($p["product_id"])){ ?>
+                <div class="actions">
+                        <a href="?increment=<?= $p["product_id"] ?>" class="quantity-adjust"  <?= $cart[$p["product_id"]] >= getStock($p["product_id"]) ? "hidden" : "" ?>>+</a>
+                        <span class="quantity"><?= $cart[$p["product_id"]] ?></span>
+                        <a href="?decrease=<?= $p["product_id"] ?>" class="quantity-adjust">-</a>
+                    </div>
+            <?php }else{?>
             <a href="?add=<?= $p["product_id"] ?>" class="add_to_cart">Add To Cart</a>
+            <?php }?>
         </div>
     <?php } ?>
 </section>
