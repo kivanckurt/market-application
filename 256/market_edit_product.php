@@ -5,7 +5,7 @@
     $upload_max_filesize = ini_get("upload_max_filesize");
     $post_max_size = ini_get("post_max_size") ;
   
-    //echo "<p>Max Upload Filesize : $upload_max_filesize</p>" ;
+    echo "<p>Max Upload Filesize : $upload_max_filesize</p>" ;
   
     $error = [] ;
     if ( $_SERVER["REQUEST_METHOD"] == "POST" && empty($_POST)){
@@ -74,7 +74,7 @@
         } 
         }
     }
-    //var_dump($error);
+    var_dump($error);
     
 
 ?>
@@ -83,50 +83,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="marketmain.css">
     <title>Document</title>
-   <link rel="stylesheet" href="marketmain.css">
-   
+   <link rel="stylesheet" href="app.css">
 </head>
 <body>
     <?php require "market_user_header.php"?>
-    <section>
-    <div style="margin: auto;  width: 90%; padding: 50px; ">
-
     <form action="" method="post" enctype="multipart/form-data">
-        <h1>Edit Product</h1>
-        <div class="nice-form-group">
-          <label>Title</label>
-          <input type="text" name="product_title" id=""value="<?= htmlspecialchars($product_title)?>">
-        </div>
+        <table>
+        <tr>
+            <td>Product ID</td>
+            <td><input type="text" name="product_id" id="email" value="<?= $product_id ?>" readonly></td>
+        </tr>
+        <tr>    
+            <td>Title</td>
+            <td><input type="text" name="product_title" id=""value="<?= $product_title?>"></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" name="product_price" id=""value="<?= $product_price?>" ></td>
+        </tr>
+        <tr>
+            <td>Discounted Price</td>
+            <td><input type="text" name="product_disc_price" id=""value="<?= $product_disc_price?>" ></td>
+        </tr>
+        <tr>
+            <td>Expiration Date</td>
+            <td><input type="date" name="product_exp_date" id="" value="<?= $product_exp_date?>"></td>
+        </tr>
+        <tr>
+            <td>Stock</td>
+            <td><input type="number" name="product_stock" id="" value="<?= $product_stock ?? $stock?>"></td>
+        </tr>
 
-        <div class="nice-form-group">
-          <label>Price</label>
-          <input type="text" name="product_price" id=""value="<?= htmlspecialchars($product_price)?>" >
-        </div>
-        <div class="nice-form-group">
-          <label>Discounted Price</label>
-          <input type="text" name="product_disc_price" id=""value="<?= htmlspecialchars($product_disc_price)?>" >
-        </div>
-
-        <div class="nice-form-group">
-                <label>Date</label>
-                <input type="date" name="product_exp_date" id="" value="<?= htmlspecialchars($product_exp_date)?>">
-        </div>
-
-        <div class="nice-form-group">
-          <label>Stock</label>
-          <input type="number" name="product_stock" id="" maxlength="80px" value="<?= $product_stock ?? $stock ?>"/>
-        </div>
-        <div class="nice-form-group">
-          <label>File upload</label>
-          <input type="file" name="newImage" require />
-        </div>
-        <div class="app-content-submit">
-            <button class="app-content-submitButton" type="submit">Submit</button>
-        </div>
-    </form>
-        
+        <tr>
+            <td>New Image:</td>
+            <td><input type="file" name="newImage"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit">Submit</button></td>
+        </tr>
+        </form>
+        </table>
         <?php if (isset($error)){ ?>
         <div class="errort">
             <?php if (isset($error["product_title"])){ ?>
@@ -141,22 +138,13 @@
             <?php if (isset($error["stock"])){ ?>
                 <p><?=$error["stock"]?></p>
             <?php  }?>
-            <?php if (isset($error["exist"])){ ?>
-                <p><?=$error["exist"]?></p>
-            <?php  }?>
             <?php if (isset($error["file"])){ ?>
                 <p><?=$error["file"]?></p>
             <?php  }?>
+            <?php if (isset($error["price_comparison"])){ ?>
+                <p><?=$error["price_comparison"]?></p>
+            <?php  }?>
         </div>
         <?php  }?>
-        <?php if (isset($success)){ ?>
-                <p><?=$success?></p>
-        <?php  }?>
-
-
-
-    </div>
-    </section>
-
 </body>
 </html>

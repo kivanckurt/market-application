@@ -90,42 +90,39 @@
 </head>
 <body>
 <?php require "market_user_header.php"?>
-    <section class="product">
-    <div style="margin: auto;  width: 90%; padding: 50px; ">
-
-    <form action="" method="post" enctype="multipart/form-data" >
-        <h1>Add Product</h1>
-        <div class="nice-form-group">
-          <label>Title</label>
-          <input type="text" name="product_title" id="" value="<?= isset($product_title) ? htmlspecialchars($product_title) : "" ?>"  />
-        </div>
-
-        <div class="nice-form-group">
-          <label>Price</label>
-          <input type="text" name="product_price" id="" value="<?=isset($product_price) ? htmlspecialchars($product_price) : "" ?>"  />
-        </div>
-        <div class="nice-form-group">
-          <label>Discounted Price</label>
-          <input type="text" name="product_disc_price" value="<?=isset($product_disc_price) ? htmlspecialchars($product_disc_price) : "" ?>" />
-        </div>
-
-        <div class="nice-form-group">
-                <label>Date</label>
-                <input type="date" name="product_exp_date" id="" value="<?=date('Y-m-d')?>" require />
-        </div>
-
-        <div class="nice-form-group">
-          <label>Stock</label>
-          <input type="number" name="stock" id="" maxlength="80px" value="<?=isset($stock) ? htmlspecialchars($stock): "" ?>"  />
-        </div>
-        <div class="nice-form-group">
-          <label>File upload</label>
-          <input type="file" />
-        </div>
-        <div class="app-content-submit">
-            <button class="app-content-submitButton" type="submit">Submit</button>
-        </div>
-    </form>
+    <section class="formBody">
+    <div>
+    <form action="" method="post" enctype="multipart/form-data">
+        <table class="form">
+        <tr>    
+            <td>Title</td>
+            <td><input type="text" name="product_title" id="" value="<?= isset($product_title) ? $product_title : "" ?>"></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" name="product_price" id="" value="<?=isset($product_price) ? $product_price : "" ?>"></td>
+        </tr>
+        <tr>
+            <td>Discounted Price</td>
+            <td><input type="text" name="product_disc_price" value="<?=isset($product_disc_price) ? $product_disc_price : "" ?>"></td>
+        </tr>
+        <tr>
+            <td>Expiration Date</td>
+            <td><input type="date" name="product_exp_date" id="" value="<?=date('Y-m-d')?>"></td>
+        </tr>
+        <tr>
+            <td>Stock</td>
+            <td><input type="number" name="stock" id="" maxlength="80px" value="<?=isset($stock) ? $stock: "" ?>"></td>
+        </tr>
+        <tr>
+            <td>New Image:</td>
+            <td><input type="file" name="newImage" ></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit">Submit</button></td>
+        </tr>
+        </table>
+        </form>
         
         <?php if (isset($error)){ ?>
         <div class="errort">
