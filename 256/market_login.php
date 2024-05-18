@@ -24,7 +24,7 @@
                 setTokenByEmail($email,$token);
             }
             $_SESSION["market_user"] = $user; // MAKING AN ACTIVE SESSION
-            header("location: market_main.php");
+            header("location: market_home.php");
             exit;
         }
         //asdasdasd
@@ -40,7 +40,7 @@
         $user = getUserByToken($token);
         if($user){
             $_SESSION["market_user"] = $user;
-            header("Location: market_main.php");
+            header("Location: market_home.php");
             exit;
         }
     }
@@ -50,7 +50,7 @@
         $user = getUserByToken($token);
         if($user){
             $_SESSION["market_user"]=$user;
-            header("location: market_main.php");
+            header("location: market_home.php");
             exit;
         }
     }

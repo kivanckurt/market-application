@@ -120,94 +120,94 @@ if(isset($_GET["message"])){
     <title>Document</title>
     <style>
         section{display: flex;}
-        section div{margin: 50px;}
-    </style>
+          section div{margin: 50px;}
+      </style>
     <link rel="stylesheet" href="app.css">
 </head>
 <body>
   <?= require_once "market_user_header.php"; ?>
-  <section>
-    <div>
-    <form action="" method="post">
-  <table>
-    <tr>
-      <td>Email</td>
-      <td><input type="text" name="email" id="email" value="<?= htmlspecialchars($user['email']) ?>" readonly></td>
-    </tr>
-
-    <tr>
-      <td>Market Name</td>
-      <td><input type="text" name="market_name" id="market_name" value="<?= htmlspecialchars($user['market_name']) ?>"></td>
-    </tr>
-    <tr>
-      <td>City</td>
-      <td><input type="text" name="city" id="city" value="<?= htmlspecialchars($user['city']) ?>"></td>
-    </tr>
-
-    <tr>
-      <td>District</td>
-      <td><input type="text" name="district" id="district" value="<?= htmlspecialchars($user['district']) ?>"></td>
-    </tr>
-
-    <tr>
-      <td>Address</td>
-      <td><input type="text" name="address" id="address" value="<?= htmlspecialchars($user['address']) ?>"></td>
-    </tr>
-
-      <tr>
-        <td>Remember Me</td>
-        <td><input type="checkbox" name="remember" id="remember" <?= isset($user["remember"]) ? "checked" : ""?>></td>
-      </tr>
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Submit"></td>
-    </tr>
-  </table>
-  </form>
-
-    </div>
-
-    <?php if (isset($error)){ ?>
-        <div class="errort">
-            <?php if (isset($error["email"])){ ?>
-                <p><?=$error["email"]?></p>
-            <?php  }?>
-            <?php if (isset($error["market_name"])){ ?>
-                <p><?=$error["market_name"]?></p>
-            <?php  }?>
-            <?php if (isset($error["password"])){ ?>
-                <p><?=$error["password"]?></p>
-            <?php  }?>
-            <?php if (isset($error["city"])){ ?>
-                <p><?=$error["city"]?></p>
-            <?php  }?>
-            <?php if (isset($error["district"])){ ?>
-                <p><?=$error["district"]?></p>
-            <?php  }?>
-            <?php if (isset($error["address"])){ ?>
-                <p><?=$error["address"]?></p>
-            <?php  }?>
-        </div>
-    <?php  }?>
-
-    <!-- PASSWORD FORM BEGINS -->
-    <div>
-        <table>
-            <form action="" method="post">
-                <tr>
-                    <td>Enter Old Password</td>
-                    <td><input type="text" name="password" id=""></td>
-                </tr>
-                <tr>
-                    <td>Enter New Password</td>
-                    <td><input type="password" name="password_new" id=""></td>
-                </tr>
-                <tr>
-                    <td colspan="2"><button type="submit">Change Password</button></td>
-                </tr>
-            </form>
-        </table>
-    </div>
+  <main>
+    <section class="product">
+      <div style="margin: auto;  width: 90%; padding: 20px; ">
+      <form action="" method="post">
+      <h1>Edit Profile</h1>
+          <div class="nice-form-group">
+            <label>Email</label>
+            <input type="text" name="email" id="email" value="<?= htmlspecialchars($user['email']) ?>" readonly>
+          </div>
+  
+          <div class="nice-form-group">
+            <label>Market Name</label>
+            <input type="text" name="market_name" id="market_name" value="<?= htmlspecialchars($user['market_name']) ?>">
+          </div>
+          <div class="nice-form-group">
+            <label>City</label>
+            <input type="text" name="city" id="city" value="<?= htmlspecialchars($user['city']) ?>">
+          </div>
+  
+          <div class="nice-form-group">
+                  <label>District</label>
+                  <input type="text" name="district" id="district" value="<?= htmlspecialchars($user['district']) ?>">
+          </div>
+  
+          <div class="nice-form-group">
+            <label>Address</label>
+            <input type="text" name="address" id="address" value="<?= htmlspecialchars($user['address']) ?>">
+          </div>
+          <div class="nice-form-group">
+            <label>Remember Me</label>
+            <input type="checkbox" name="remember" id="remember" <?= isset($user["remember"]) ? "checked" : ""?>>
+          </div>
+          <div class="app-content-submit">
+              <button class="app-content-submitButton" type="submit">Submit</button>
+          </div>
+    
+    </form>
     </section>
+    <section class="product">
+      </div>
+  
+      <?php if (isset($error)){ ?>
+          <div class="errort">
+              <?php if (isset($error["email"])){ ?>
+                  <p><?=$error["email"]?></p>
+              <?php  }?>
+              <?php if (isset($error["market_name"])){ ?>
+                  <p><?=$error["market_name"]?></p>
+              <?php  }?>
+              <?php if (isset($error["password"])){ ?>
+                  <p><?=$error["password"]?></p>
+              <?php  }?>
+              <?php if (isset($error["city"])){ ?>
+                  <p><?=$error["city"]?></p>
+              <?php  }?>
+              <?php if (isset($error["district"])){ ?>
+                  <p><?=$error["district"]?></p>
+              <?php  }?>
+              <?php if (isset($error["address"])){ ?>
+                  <p><?=$error["address"]?></p>
+              <?php  }?>
+          </div>
+      <?php  }?>
+              
+      <!-- PASSWORD FORM BEGINS -->
+      <div style="margin: auto;  width: 90%; padding: 50px;">
+      <h1 >Change Password</h1>
+          <div class="nice-form-group">
+            <label>Enter Old Password</label>
+            <input type="password" name="password" id="">
+          </div>
+              
+          <div class="nice-form-group">
+            <label>Enter New Password</label>
+            <input type="password" name="password_new" id="">
+          </div>
+              
+          <div class="app-content-submit">
+              <button class="app-content-submitButton" type="submit">Change Password</button>
+          </div>
+      </div>
+    </section>
+  </main>
 </body>
 </html>
