@@ -51,16 +51,7 @@
     }
 
     //Get Query
-    $order_by_param = "products.product_exp_date";
-    $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
-        AND market_user.email = ? ORDER BY $order_by_param LIMIT ?,4 ;";
-    if($_SERVER["REQUEST_METHOD"]=="GET"){
-        $stmt = $db->prepare($query_products);
-        $stmt->bindParam(1, $user["email"], PDO::PARAM_STR);
-        $stmt->bindParam(2, $firstItemIndex, PDO::PARAM_INT);
-        $stmt->execute();
-        $products = $stmt ->fetchAll();
-    }
+
 
 
 
