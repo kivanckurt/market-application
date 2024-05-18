@@ -13,13 +13,10 @@
 
     //get method operations
     if($_SERVER["REQUEST_METHOD"]=="GET"){
-        // var_dump($_GET);    
         extract($_GET);
         $keyword = $keyword ?? "";
         $cleanedKeyword = str_replace('%', '', $keyword);
         $formedKeyword ='%'.$cleanedKeyword.'%';
-        // var_dump($keyword);
-        // var_dump($formedKeyword);
     }
 
     //Getting the number of products & pages

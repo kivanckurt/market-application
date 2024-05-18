@@ -4,6 +4,13 @@ if(isset($_SESSION["market_user"])){
     // var_dump($_SESSION["market_user"]);
     $user = $_SESSION["market_user"];
 }
+
+if($_SERVER["REQUEST_METHOD"]=="GET"){
+    extract($_GET);
+    $keyword = $keyword ?? "";
+    $cleanedKeyword = str_replace('%', '', $keyword);
+    $formedKeyword ='%'.$cleanedKeyword.'%';
+}
 ?>
 
 <style>
@@ -47,7 +54,7 @@ if(isset($_SESSION["market_user"])){
                 </td>
                 <td>
                     <form action="market_main.php" method="GET">
-                        <input type="text" name="keyword" id="searchBar" placeholder="Apple">
+                        <input type="text" name="keyword" id="searchBar" placeholder="Apple" value="<?=$keyword?>">
                     </form>
                 </td>
                 <td class="addProduct">
