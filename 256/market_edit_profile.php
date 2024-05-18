@@ -64,6 +64,8 @@ if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && iss
   // header("location: logout.php");
 }
 
+
+
 if(isset($_GET["message"])){
   message($_GET["message"]);
 }

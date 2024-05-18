@@ -1,7 +1,9 @@
 <?php
 require_once "db.php";
-$user = &$_SESSION["customer_user"];
-$cart = &$_SESSION["customer_user"]["cart"];
+if(isAuthenticatedCusto()){
+    $user = &$_SESSION["customer_user"];
+    $cart = &$_SESSION["customer_user"]["cart"];
+}
 
 //consumer operations
 function updateCustomerProfile($email,$fullname, $city, $district, $address, $profile) {
@@ -43,7 +45,11 @@ function updateCart($product_id, $quantity) {
 
 function incrementCartItemQuantity($product_id){
     global $cart;
-    updateCart($product_id, 1);
+    if($cart[$product_id] == getStock($product_id)){
+        removeFromCart($product_id);
+    }else{
+        updateCart($product_id, 1);
+    }
 }
 
 function decrementCartItemQuantity($product_id){

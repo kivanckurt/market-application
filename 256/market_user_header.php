@@ -28,8 +28,8 @@ if(isset($_SESSION["market_user"])){
         border: 1px solid black;
         border-radius: 10px;
         }
-        header .logo{ color: white; background-color: lightblue;}
-        .logo a {text-decoration: none; color: blue; font-size: 30px; border-radius: 10px;}
+        header .logo{ color: white; background-color: lightblue;  border-radius: 10px;}
+        .logo a {text-decoration: none; color: blue; font-size: 30px;}
         #searchBar{border-radius: 10px; height: max-content; width: 300px;
         position: absolute; left: 200px; top: 10px;}
         #searchBar::placeholder{font-size: large;}

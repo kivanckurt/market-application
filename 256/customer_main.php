@@ -67,8 +67,6 @@
     var_dump($cart);
     require_once "customer_header.php";
 
-
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -214,7 +212,7 @@ if(isset($_SESSION["customer_user"])){
                 if($keyword == ""){
                 echo "<a href='?page=$i'>$i</a> ";
                 }else{
-                    echo "<a href='?keyword=$formedKeyword&page=$i'>$i</a>";
+                    echo "<a href='?keyword=$keyword&page=$i'>$i</a>";
                 }
             }
         }
