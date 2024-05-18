@@ -9,8 +9,12 @@
     }
 
     $user = $_SESSION["market_user"];
-    var_dump($user);
-
+    //var_dump($user);
+    $user["email"]=htmlspecialchars($user["email"]);
+    $user["market_name"]=htmlspecialchars($user["market_name"]);
+    $user["city"]=htmlspecialchars($user["city"]);
+    $user["district"]=htmlspecialchars($user["district"]);
+    $user["address"]=htmlspecialchars($user["address"]);
     //get method operations
     if($_SERVER["REQUEST_METHOD"]=="GET"){
         extract($_GET);

@@ -5,17 +5,16 @@
         header("location: market_main.php");
     }
 
-    if($_SERVER["REQUEST_METHOD"]=="GET"){
-        if(isset($_GET["success"])){
-            $success="Product is added successfully";
-        }
-       
-    }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         var_dump($_POST);
         extract($_POST);
         $error=[];
+
+        $product_title= htmlspecialchars($product_title);
+        $product_price= htmlspecialchars($product_price);
+        $product_disc_price=htmlspecialchars($product_disc_price);
+        $stock=htmlspecialchars($stock);
         if (!$product_title) {
             $error["product_title"]="Product title cannot be empty";
           }
@@ -27,6 +26,9 @@
           }
           if (!$stock) {
             $error["stock"]="Stock cannot be empty";
+          }
+          if ($product_price < $product_disc_price) {
+            $error["price_comparison"]="Discounted price cannot be higher than default price";
           }
     }
 
@@ -55,7 +57,7 @@
                     $product_image = $file["name"];
                     $market_email = $_SESSION["market_user"]["email"];
                     createProduct($product_title,$product_price,$product_disc_price,$product_image,$product_exp_date,$stock,$market_email);
-                    header("location: market_add_product.php?success=1");
+                    header("location: market_add_product.php");
                    }else{
                     $error["file"]="Upload image file only!";
                    
@@ -94,15 +96,15 @@
         <table class="form">
         <tr>    
             <td>Title</td>
-            <td><input type="text" name="product_title" id="" value="<?= isset($product_title) ? htmlspecialchars($product_title) : "" ?>"></td>
+            <td><input type="text" name="product_title" id="" value="<?= isset($product_title) ? $product_title : "" ?>"></td>
         </tr>
         <tr>
             <td>Price</td>
-            <td><input type="text" name="product_price" id="" value="<?=isset($product_price) ? htmlspecialchars($product_price) : "" ?>"></td>
+            <td><input type="text" name="product_price" id="" value="<?=isset($product_price) ? $product_price : "" ?>"></td>
         </tr>
         <tr>
             <td>Discounted Price</td>
-            <td><input type="text" name="product_disc_price" value="<?=isset($product_disc_price) ? htmlspecialchars($product_disc_price) : "" ?>"></td>
+            <td><input type="text" name="product_disc_price" value="<?=isset($product_disc_price) ? $product_disc_price : "" ?>"></td>
         </tr>
         <tr>
             <td>Expiration Date</td>
@@ -110,7 +112,7 @@
         </tr>
         <tr>
             <td>Stock</td>
-            <td><input type="number" name="stock" id="" maxlength="80px" value="<?=isset($stock) ? htmlspecialchars($stock): "" ?>"></td>
+            <td><input type="number" name="stock" id="" maxlength="80px" value="<?=isset($stock) ? $stock: "" ?>"></td>
         </tr>
         <tr>
             <td>New Image:</td>
@@ -142,10 +144,10 @@
             <?php if (isset($error["file"])){ ?>
                 <p><?=$error["file"]?></p>
             <?php  }?>
+            <?php if (isset($error["price_comparison"])){ ?>
+                <p><?=$error["price_comparison"]?></p>
+            <?php  }?>
         </div>
-        <?php  }?>
-        <?php if (isset($success)){ ?>
-                <p><?=$success?></p>
         <?php  }?>
 
 
