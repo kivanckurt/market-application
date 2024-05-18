@@ -109,7 +109,7 @@ function isUpcomingProduct($product_id){
 
 function calculateTotal() {
     $total =0;
-    global $cart;  
+    global $cart;
     foreach ($cart as $product_id => $count){
         $p = getProductDetailed($product_id);
          if(isUpcomingProduct($product_id)){
@@ -141,4 +141,9 @@ function clearCart() {
         removeFromCart($product_id);
     }
     $_SESSION["customer_user"]["$cart"] =$cart;
+}
+
+function isInCart($product_id){
+    global $cart;
+    return array_key_exists($product_id,$cart);
 }

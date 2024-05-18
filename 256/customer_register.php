@@ -51,16 +51,13 @@
             $_SESSION["post"]=$_POST;
             extract($_POST);
             //BURDA GICIK SEYLER DÖNDÜ. FAZLADAN GÜVENLİK OLARAK DÜŞÜN.
-            $fullname=filter_var($fullname, FILTER_SANITIZE_STRING);
-            $fullname=filter_var($fullname, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $city=filter_var($city, FILTER_SANITIZE_STRING);
-            $city=filter_var($city, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $district=filter_var($district, FILTER_SANITIZE_STRING);
-            $district=filter_var($district, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $address=filter_var($address, FILTER_SANITIZE_STRING);
-            $address=filter_var($address, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-            $email=filter_var($email, FILTER_SANITIZE_STRING);
-            $email=filter_var($email, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+            
+            $fullname=htmlspecialchars($fullname);
+            $city=htmlspecialchars($city);
+            $district=htmlspecialchars($district);
+            $address=htmlspecialchars($address);
+            $email=htmlspecialchars($email);
+
             if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
             $error["email"]="Email is in a incorrect format";
             }
@@ -137,27 +134,27 @@
         <h3>Customer Registration</h3>
 
         <label for="email">Email</label>
-        <input type='text' name='email' id='' value="<?= isset($email) ? filter_var($email, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='email' id='' value="<?= isset($email) ? $email: "" ?>">
             
 
         <label for="fullname">Full Name</label>
-        <input type='text' name='fullname' id='' value="<?= isset($fullname) ? filter_var($fullname, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='fullname' id='' value="<?= isset($fullname) ? $fullname: "" ?>">
             
 
         <label for="password">Password</label>
-        <input type='password' name='password' id='' value="<?= isset($password) ? filter_var($password, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='password' name='password' id='' value="<?= isset($password) ? $password: "" ?>">
            
 
         <label for="city">City</label>
-        <input type='text' name='city' id='' value="<?= isset($city) ? filter_var($city, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='city' id='' value="<?= isset($city) ? $city : "" ?>">
 
 
         <label for="district">District</label>
-        <input type='text' name='district' id='' value="<?= isset($district) ? filter_var($district, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='district' id='' value="<?= isset($district) ? $district: "" ?>">
             
 
         <label for="address">Address</label>
-        <input type='text' name='address' id='' value="<?= isset($address) ? filter_var($address, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='address' id='' value="<?= isset($address) ? $address: "" ?>">
 
 
         <button type="submit">Register</button> 

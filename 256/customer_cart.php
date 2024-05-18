@@ -39,96 +39,232 @@
         purchaseCart();
         header("location: customer_main.php");
     }
-
+    require_once "customer_header.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Shopping Cart</title>
     <style>
-        .market_products{max-width: 900px; position: relative;}
-        .market_product{border: 1px solid black;  display: flex; padding: 10px;}
-        .market_product:first-of-type{border-top-left-radius: 10px; border-top-right-radius: 10px;}
-        .market_product:last-of-type{border-bottom-left-radius: 10px; border-bottom-right-radius: 10px;}
-        .market_product .imgdiv{width: 90px;}
-        .market_prod_img{max-width: 90px; max-height: 90px;}
-        /* .market_product_price{position: absolute; right: 50px;} */
-        .market_product .stock{position: absolute; right: 50px;}
-        /* .market_product .edit{} */
-        .market_product_table_cell{margin: 50px;}
-        /* .market_product .last{position: absolute; right: 10px;} */
-        .market_product td{width: 120px;}
-        .expired{background-color: lightcoral;}
-        .safe{background-color: lightgreen;}
-        #a{display: fl;}
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .market_products {
+            max-width: 900px;
+            margin: auto;
+            margin-top: 100px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+        }
+
+        .market_products h3 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .market_products h3::before,
+        .market_products h3::after {
+            content: '';
+            flex: 1;
+            border-bottom: 2px solid #333;
+            margin: 0 20px;
+        }
+
+        .market_products table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .market_products table th,
+        .market_products table td {
+            padding: 10px;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        .market_products table th {
+            background-color: #f1f1f1;
+            font-weight: bold;
+        }
+
+        .market_product {
+            border-bottom: 1px solid #ddd;
+        }
+
+        .market_product:last-of-type {
+            border-bottom: none;
+        }
+
+        .market_prod_img {
+            max-width: 90px;
+            max-height: 90px;
+            object-fit: cover;
+        }
+
+        .market_product_title {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .market_product_price,
+        .market_product_exp_date,
+        .market_product_district,
+        .market_product_stock {
+            display: block;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .actions a {
+            margin: 0 5px;
+            text-decoration: none;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .actions a:hover {
+            color: #007BFF;
+        }
+
+        .quantity-adjust {
+            display: inline-block;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+
+        .quantity-adjust:hover {
+            color: #007BFF;
+        }
+
+        .quantity {
+            display: inline-block;
+            width: 30px;
+            text-align: center;
+        }
+
+        .remove {
+            font-size: 1.5rem; /* Make the trash icon bigger */
+            color: #ff0000;
+            cursor: pointer;
+            display: flex;
+            justify-content: center; /* Center the icon */
+            align-items: center;     /* Center the icon */
+        }
+
+        .remove:hover {
+            color: #cc0000;
+        }
+
+        .total {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-top: 20px;
+        }
+
+        .purchase-button {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .purchase-button a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #6038b4;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .purchase-button a:hover {
+            background-color: #301c5a;
+        }
+
+
     </style>
 </head>
 <body>
 <div id="a">
 <section class="market_products">
-    <h3> Products</h3>
-    <?php
-    // var_dump($products);
-    foreach ($cart as $productId => $count){ 
-        $p = getProductDetailed($productId)?>
-        <?php 
-            // var_dump(strtotime($p["product_exp_date"]));
-            // var_dump(time());
-            // var_dump(time() > strtotime($p["product_exp_date"]));
+    <h3>Shopping Cart</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Total Price</th>
+                <th>Expiration Date</th>
+                <th>District</th>
+                <th>Stock</th>
+                <th>Quantity</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+        foreach ($cart as $productId => $count) { 
+            $p = getProductDetailed($productId);
             $t = time() + 60*60*24*4;
-            // var_dump(strtotime($p["product_exp_date"]) -time());
+            $isSafe = strtotime($p["product_exp_date"]) >= $t;
             ?>
-        <div class="market_product <?= strtotime($p["product_exp_date"]) >= $t ? "safe" : ""?>">
-        <div class="imgdiv">
-            <img src="./images/<?=$p["product_image"] ?>" alt="" class="market_prod_img">
-        </div>
-        <div>
-            <table >
-                <tr>
-                    <td>
-                        <p>Title</p>
-                        <span class="market_product_title"><?=$p["product_title"] ?></span>
-                    </td>
-                    <td>
-                        <p>Total Price</p>
-                        <span class="market_product_price"> <?= isUpcomingProduct($productId) ? $p["product_disc_price"] * $count : $p["product_price"] *$count?>
-                        TL <?= isUpcomingProduct($productId) ? "(discount applied)"  :""?> </span>
-                        
-                    </td>
-                    <td>
-                        <p>Expiration_date:</p>
-                        <span class="market_product_exp_date"> <?=$p["product_exp_date"] ?></span>
-                    </td>
-                    <td >
-                        <p>District</p>
-                        <span class="market_product_disc_price"> <?=$p["district"] ?></span>
-                    </td>
-                    <td>
-                        <p>Quanity</p>
-                        <span><?= $count?></span>
-                    </td>
-                    <td class="last">
-                        <p><a href="?remove=<?=$productId ?>"><span class="remove">Remove</span></a></p>
-                        <p>
-                            <a href="?add=<?=$p["product_id"] ?>"><span class="remove">+</span></a>
-                            <a href="?decrease=<?=$p["product_id"] ?>"><span class="remove">-</span></a>
-                        </p>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <?php  }?>
+            <tr class="market_product <?= $isSafe ? 'safe' : 'expired' ?>">
+                <td>
+                    <img src="./images/<?= $p["product_image"] ?>" alt="" class="market_prod_img">
+                    <p class="market_product_title"><?= $p["product_title"] ?></p>
+                </td>
+                <td>
+                    <p class="market_product_price"> <?= isUpcomingProduct($productId) ? $p["product_disc_price"] * $count : $p["product_price"] * $count ?>
+                    TL <?= isUpcomingProduct($productId) ? "(discount applied)"  : "" ?> </p>
+                </td>
+                <td>
+                    <p class="market_product_exp_date"><?= $p["product_exp_date"] ?></p>
+                </td>
+                <td>
+                    <p class="market_product_district"><?= $p["district"] ?></p>
+                </td>
+                <td>
+                    <p class="market_product_stock"><?= $p["stock"] ?></p>
+                </td>
+                <td>
+                    <div class="actions">
+                        <a href="?add=<?= $p["product_id"] ?>"  <?= $count >= getStock($productId) ? " hidden" : 'class="quantity-adjust"' ?>>+</a>
+                        <span class="quantity"><?= $count ?></span>
+                        <a href="?decrease=<?= $p["product_id"] ?>" class="quantity-adjust">-</a>
+                    </div>
+                </td>
+                <td>
+                    <a href="?remove=<?= $productId ?>"><i class="fa-solid fa-trash fa-xl"></i></a>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
 </section>
-<div>
-    <!-- checkout screen -->
-    <h3>Total: <?= calculateTotal()?> TL</h3>
-    <p><a href="?purchase=1">Purchase Items</a></p>
-    <a href="customer_main.php">main</a>
+<div class="total">
+    <h3>Total: <?= calculateTotal() ?> TL</h3>
+    <div class="purchase-button">
+        <a href="?purchase=1">Purchase Items</a>
+    </div>
+    <div class="purchase-button">
+        <a href="customer_main.php">Return To Homepage</a>
+    </div>
 </div>
-
 </div>
 </body>
 </html>
