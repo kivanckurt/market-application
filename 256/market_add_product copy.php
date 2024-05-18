@@ -5,16 +5,17 @@
         header("location: market_main.php");
     }
 
+    if($_SERVER["REQUEST_METHOD"]=="GET"){
+        if(isset($_GET["success"])){
+            $success="Product is added successfully";
+        }
+       
+    }
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         var_dump($_POST);
         extract($_POST);
         $error=[];
-
-        $product_title= htmlspecialchars($product_title);
-        $product_price= htmlspecialchars($product_price);
-        $product_disc_price=htmlspecialchars($product_disc_price);
-        $stock=htmlspecialchars($stock);
         if (!$product_title) {
             $error["product_title"]="Product title cannot be empty";
           }
@@ -26,9 +27,6 @@
           }
           if (!$stock) {
             $error["stock"]="Stock cannot be empty";
-          }
-          if ($product_price < $product_disc_price) {
-            $error["price_comparison"]="Discounted price cannot be higher than default price";
           }
     }
 
@@ -57,7 +55,7 @@
                     $product_image = $file["name"];
                     $market_email = $_SESSION["market_user"]["email"];
                     createProduct($product_title,$product_price,$product_disc_price,$product_image,$product_exp_date,$stock,$market_email);
-                    header("location: market_add_product.php");
+                    header("location: market_add_product.php?success=1");
                    }else{
                     $error["file"]="Upload image file only!";
                    
@@ -82,6 +80,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app.css">
     <title>Document</title>
     <style>
         .form{margin: 50px;}
@@ -90,42 +89,41 @@
 </head>
 <body>
 <?php require "market_user_header.php"?>
-    <section class="product">
-    <div style="margin: auto;  width: 90%; padding: 50px; ">
-
-    <form action="" method="post" enctype="multipart/form-data" >
-        <h1>Add Product</h1>
-        <div class="nice-form-group">
-          <label>Title</label>
-          <input type="text" name="product_title" id="" value="<?= isset($product_title) ? htmlspecialchars($product_title) : "" ?>"  />
-        </div>
-
-        <div class="nice-form-group">
-          <label>Price</label>
-          <input type="text" name="product_price" id="" value="<?=isset($product_price) ? htmlspecialchars($product_price) : "" ?>"  />
-        </div>
-        <div class="nice-form-group">
-          <label>Discounted Price</label>
-          <input type="text" name="product_disc_price" value="<?=isset($product_disc_price) ? htmlspecialchars($product_disc_price) : "" ?>" />
-        </div>
-
-        <div class="nice-form-group">
+    <section class="formBody">
+    <div>
+    <form action="" method="post" enctype="multipart/form-data">
+        <table class="form">
+        <tr>    
+            <td>Title</td>
+            <td><input type="text" name="product_title" id="" value="<?= isset($product_title) ? htmlspecialchars($product_title) : "" ?>"></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+            <td><input type="text" name="product_price" id="" value="<?=isset($product_price) ? htmlspecialchars($product_price) : "" ?>"></td>
+        </tr>
+        <tr>
+            <td>Discounted Price</td>
+            <td><input type="text" name="product_disc_price" value="<?=isset($product_disc_price) ? htmlspecialchars($product_disc_price) : "" ?>"></td>
+        </tr>
+        <tr>
+            <td>Expiration Date</td>
+            <td><input type="date" name="product_exp_date" id="" value="<?=date('Y-m-d')?>"></td>
+        </tr>
+        <tr>
+            <td>Stock</td>
+            <td><input type="number" name="stock" id="" maxlength="80px" value="<?=isset($stock) ? htmlspecialchars($stock): "" ?>"></td>
+        </tr>
+        <tr>
+            <div class="nice-form-group">
                 <label>Date</label>
-                <input type="date" name="product_exp_date" id="" value="<?=date('Y-m-d')?>" require />
-        </div>
-
-        <div class="nice-form-group">
-          <label>Stock</label>
-          <input type="number" name="stock" id="" maxlength="80px" value="<?=isset($stock) ? htmlspecialchars($stock): "" ?>"  />
-        </div>
-        <div class="nice-form-group">
-          <label>File upload</label>
-          <input type="file" />
-        </div>
-        <div class="app-content-submit">
-            <button class="app-content-submitButton" type="submit">Submit</button>
-        </div>
-    </form>
+                <input type="date" value="2018-07-22" />
+            </div>
+        </tr>
+        <tr>
+            <td colspan="2"><button type="submit">Submit</button></td>
+        </tr>
+        </table>
+        </form>
         
         <?php if (isset($error)){ ?>
         <div class="errort">
@@ -147,10 +145,10 @@
             <?php if (isset($error["file"])){ ?>
                 <p><?=$error["file"]?></p>
             <?php  }?>
-            <?php if (isset($error["price_comparison"])){ ?>
-                <p><?=$error["price_comparison"]?></p>
-            <?php  }?>
         </div>
+        <?php  }?>
+        <?php if (isset($success)){ ?>
+                <p><?=$success?></p>
         <?php  }?>
 
 
