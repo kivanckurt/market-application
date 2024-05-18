@@ -17,8 +17,46 @@ $user = $_SESSION["market_user"];
 
 if(!empty($_POST)){
   extract($_POST);
+  $error=[];
+  if(array_key_exists('email',$_POST)){
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
+      $error["email"]="Email is in a incorrect format";
+    }
+    if (!$market_name) {
+      $error["market_name"]="Market name cannot be empty";
+    }
+    if (!$city) {
+      $error["city"]="City cannot be empty";
+    }
+    if (!$district) {
+      $error["district"]="District cannot be empty";
+    }
+    if (!$address) {
+      $error["address"]="Address cannot be empty";
+    }
+  }
+
+  if(array_key_exists('password_new',$_POST)){
+    if(!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/', $password_new)) {
+      $error["password"]="Password does not satify requirements";
+
+      /*
+      at least one lowercase char
+      at least one uppercase char
+      at least one digit
+      password lenght must be between 8-20
+      */
+    }
+  }
+
+
+
+
   var_dump($_POST);
 }
+
+if(empty($error)){
+
 //change password
 if(!empty($_POST) && isset($_POST["password"]) && isset($_POST["password_new"])){
   // echo "<h1>READS PASSWORDS</h1>";
@@ -68,6 +106,8 @@ if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && iss
 
 if(isset($_GET["message"])){
   message($_GET["message"]);
+}
+
 }
 // var_dump($user);
 ?>
@@ -125,6 +165,29 @@ if(isset($_GET["message"])){
   </form>
 
     </div>
+
+    <?php if (isset($error)){ ?>
+        <div class="errort">
+            <?php if (isset($error["email"])){ ?>
+                <p><?=$error["email"]?></p>
+            <?php  }?>
+            <?php if (isset($error["market_name"])){ ?>
+                <p><?=$error["market_name"]?></p>
+            <?php  }?>
+            <?php if (isset($error["password"])){ ?>
+                <p><?=$error["password"]?></p>
+            <?php  }?>
+            <?php if (isset($error["city"])){ ?>
+                <p><?=$error["city"]?></p>
+            <?php  }?>
+            <?php if (isset($error["district"])){ ?>
+                <p><?=$error["district"]?></p>
+            <?php  }?>
+            <?php if (isset($error["address"])){ ?>
+                <p><?=$error["address"]?></p>
+            <?php  }?>
+        </div>
+    <?php  }?>
 
     <!-- PASSWORD FORM BEGINS -->
     <div>

@@ -5,24 +5,49 @@
         header("location: market_main.php");
     }
 
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         var_dump($_POST);
         extract($_POST);
+        $error=[];
+
+        $product_title= htmlspecialchars($product_title);
+        $product_price= htmlspecialchars($product_price);
+        $product_disc_price=htmlspecialchars($product_disc_price);
+        $stock=htmlspecialchars($stock);
+        if (!$product_title) {
+            $error["product_title"]="Product title cannot be empty";
+          }
+          if (!$product_price) {
+            $error["product_price"]="Product price cannot be empty";
+          }
+          if (!$product_disc_price) {
+            $error["product_disc_price"]="Product discounted price cannot be empty";
+          }
+          if (!$stock) {
+            $error["stock"]="Stock cannot be empty";
+          }
+          if ($product_price < $product_disc_price) {
+            $error["price_comparison"]="Discounted price cannot be higher than default price";
+          }
     }
 
+
+    if(empty($error)){
     //create new product
     if($_SERVER["REQUEST_METHOD"]=="POST" && isset($product_title) && isset($product_price) && isset($product_disc_price)){
         //Form submitted
         if(getProductByTitle($product_title)){
-            $error[] = "Product already exists, please edit existing product";
+            
+            $error["exist"] = "Product already exists, please edit existing product";
         }else{
             foreach($_FILES as $fb => $file) {
                 if ( $file["size"] == 0) {
                     if ( empty($file["name"])) {
                         // var_dump($_POST);
-                        $error[] = "No file uploaded" ;
+                        $error["file"] = "No file uploaded" ;
                     } else {
-                        $error[] = "{$file['name']} is greater than max upload size in '<b>$fb</b>'" ;
+                        $error["file"] = "{$file['name']} is greater than max upload size in '<b>$fb</b>'" ;
                     } 
                 } else {
                     $allowedTypes = array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF);
@@ -32,14 +57,16 @@
                     $product_image = $file["name"];
                     $market_email = $_SESSION["market_user"]["email"];
                     createProduct($product_title,$product_price,$product_disc_price,$product_image,$product_exp_date,$stock,$market_email);
+                    header("location: market_add_product.php");
                    }else{
-                    $error[]="Upload image file only!";
+                    $error["file"]="Upload image file only!";
+                   
                    }
                 }
              } 
         }
     }
-
+    }
     // 
     // if($_SERVER["REQUEST_METHOD"]=="POST" && isset($select_product_id) && isset($product_exp_date) && isset($stock)){
     //     //If product already exists in market's inventory give alert. This section of the code may be changed in future.
@@ -69,15 +96,15 @@
         <table class="form">
         <tr>    
             <td>Title</td>
-            <td><input type="text" name="product_title" id=""></td>
+            <td><input type="text" name="product_title" id="" value="<?= isset($product_title) ? $product_title : "" ?>"></td>
         </tr>
         <tr>
             <td>Price</td>
-            <td><input type="text" name="product_price" id=""></td>
+            <td><input type="text" name="product_price" id="" value="<?=isset($product_price) ? $product_price : "" ?>"></td>
         </tr>
         <tr>
             <td>Discounted Price</td>
-            <td><input type="text" name="product_disc_price" ></td>
+            <td><input type="text" name="product_disc_price" value="<?=isset($product_disc_price) ? $product_disc_price : "" ?>"></td>
         </tr>
         <tr>
             <td>Expiration Date</td>
@@ -85,17 +112,46 @@
         </tr>
         <tr>
             <td>Stock</td>
-            <td><input type="number" name="stock" id="" maxlength="80px"></td>
+            <td><input type="number" name="stock" id="" maxlength="80px" value="<?=isset($stock) ? $stock: "" ?>"></td>
         </tr>
         <tr>
             <td>New Image:</td>
-            <td><input type="file" name="newImage"></td>
+            <td><input type="file" name="newImage" ></td>
         </tr>
         <tr>
             <td colspan="2"><button type="submit">Submit</button></td>
         </tr>
-        </form>
         </table>
+        </form>
+        
+        <?php if (isset($error)){ ?>
+        <div class="errort">
+            <?php if (isset($error["product_title"])){ ?>
+                <p><?=$error["product_title"]?></p>
+            <?php  }?>
+            <?php if (isset($error["product_price"])){ ?>
+                <p><?=$error["product_price"]?></p>
+            <?php  }?>
+            <?php if (isset($error["product_disc_price"])){ ?>
+                <p><?=$error["product_disc_price"]?></p>
+            <?php  }?>
+            <?php if (isset($error["stock"])){ ?>
+                <p><?=$error["stock"]?></p>
+            <?php  }?>
+            <?php if (isset($error["exist"])){ ?>
+                <p><?=$error["exist"]?></p>
+            <?php  }?>
+            <?php if (isset($error["file"])){ ?>
+                <p><?=$error["file"]?></p>
+            <?php  }?>
+            <?php if (isset($error["price_comparison"])){ ?>
+                <p><?=$error["price_comparison"]?></p>
+            <?php  }?>
+        </div>
+        <?php  }?>
+
+
+
     </div>
 
     <!-- Product selection form -->
