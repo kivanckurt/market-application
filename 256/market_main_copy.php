@@ -26,14 +26,23 @@
 
     if($_SERVER["REQUEST_METHOD"]=="GET"){
         extract($_GET);
+        $keyword = $keyword ?? "";
+        $cleanedKeyword = str_replace('%', '', $keyword);
+        $formedKeyword ='%'.$cleanedKeyword.'%';
         $ar = ["active" => "and product_exp_date > CURDATE()","expired" => "and product_exp_date <= CURDATE()", "all" => ""];
         $orderBy = isset($orderBy)? $orderBy : "product_exp_date";
         $sort = isset($sort) ? $sort : "desc";
-        $filter = isset($filter) ? $ar[$filter] : "";
+        $queryFilter = isset($filter) ? $ar[$filter] : "";
+        // if(!array_key_exists($filter,$ar)){
+        //   //injection
+        //   header("location: mal.php");
+        //   exit;
+        // }
         $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
-            AND market_user.email = ? $filter ORDER BY $orderBy $sort;";
+            AND market_user.email = ? and product_title LIKE ? $queryFilter ORDER BY $orderBy $sort;";
         $stmt = $db->prepare($query_products);
         $stmt->bindParam(1, $user["email"], PDO::PARAM_STR);
+        $stmt->bindParam(2, $formedKeyword, PDO::PARAM_STR);
         if(in_array($sort,["asc","desc"])){
           $stmt->execute();
         }
@@ -85,7 +94,9 @@
       <button class="app-content-headerButton" onclick="location.href='market_add_product.php'">Add Product</button>
     </div>
     <div class="app-content-actions">
-      <input class="search-bar" placeholder="Search..." type="text">
+      <form action="" method="get">
+        <input class="search-bar" placeholder="Search..." type="text" name="keyword" value="<?=$keyword?>">
+      </form>
       <div class="app-content-actions-wrapper">
         <div class="filter-button-wrapper">
           <button class="action-button filter jsFilter"><span>Filter</span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-filter"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg></button>
@@ -118,23 +129,23 @@
     </div>
     <div class="products-area-wrapper tableView">
       <div class="products-header">
-        <div class="product-cell image"> Items<a href="?orderBy=product_title&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
+        <div class="product-cell image"> Items<a href="?orderBy=product_title&sort=<?=$sort=="desc" ? "asc" : "desc"?><?=isset($filter) == "" ? "" :"&filter=$filter"?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
           </button></a>
         </div>
-        <div class="product-cell price">Price<a href="?orderBy=product_price&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
+        <div class="product-cell price">Price<a href="?orderBy=product_price&sort=<?=$sort=="desc" ? "asc" : "desc"?><?=isset($filter) == "" ? "" :"&filter=$filter"?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
           </button></div></a>
-        <div class="product-cell status-cell">Status<a href="?orderBy=product_exp_date&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
+        <div class="product-cell status-cell">Status<a href="?orderBy=product_exp_date&sort=<?=$sort=="desc" ? "asc" : "desc"?><?=isset($filter) == "" ? "" :"&filter=$filter"?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
           </button></div></a>
-        <div class="product-cell sales">Expiration Date<a href="?orderBy=product_exp_date&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
+        <div class="product-cell sales">Expiration Date<a href="?orderBy=product_exp_date&sort=<?=$sort=="desc" ? "asc" : "desc"?><?=isset($filter) == "" ? "" :"&filter=$filter"?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
           </button></div></a>
-        <div class="product-cell category">Discounted Price<a href="?orderBy=product_disc_price&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
+        <div class="product-cell category">Discounted Price<a href="?orderBy=product_disc_price&sort=<?=$sort=="desc" ? "asc" : "desc"?><?=isset($filter) == "" ? "" :"&filter=$filter"?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
           </button></div></a>
-        <div class="product-cell stock">Stock<a href="?orderBy=stock&sort=<?=$sort=="desc" ? "asc" : "desc"?>"><button class="sort-button">
+        <div class="product-cell stock">Stock<a href="?orderBy=stock&sort=<?=$sort=="desc" ? "asc" : "desc"?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>"><button class="sort-button">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 512 512"><path fill="currentColor" d="M496.1 138.3L375.7 17.9c-7.9-7.9-20.6-7.9-28.5 0L226.9 138.3c-7.9 7.9-7.9 20.6 0 28.5 7.9 7.9 20.6 7.9 28.5 0l85.7-85.7v352.8c0 11.3 9.1 20.4 20.4 20.4 11.3 0 20.4-9.1 20.4-20.4V81.1l85.7 85.7c7.9 7.9 20.6 7.9 28.5 0 7.9-7.8 7.9-20.6 0-28.5zM287.1 347.2c-7.9-7.9-20.6-7.9-28.5 0l-85.7 85.7V80.1c0-11.3-9.1-20.4-20.4-20.4-11.3 0-20.4 9.1-20.4 20.4v352.8l-85.7-85.7c-7.9-7.9-20.6-7.9-28.5 0-7.9 7.9-7.9 20.6 0 28.5l120.4 120.4c7.9 7.9 20.6 7.9 28.5 0l120.4-120.4c7.8-7.9 7.8-20.7-.1-28.5z"/></svg>
           </button></div></a>
 
