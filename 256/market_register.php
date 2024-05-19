@@ -75,7 +75,7 @@
 
             if(empty($error)){
             $subject="Customer Mail Verification";
-            $random = rand(10000,99999);
+            $random = rand(100000,999999);
             Mail::send($email,$subject, $random) ;
             $_SESSION["random"]=$random;
             $_SESSION["ok"]=true;

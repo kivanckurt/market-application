@@ -17,13 +17,13 @@ class Mail {
         $mail->isSMTP();                                            
         $mail->Host       = 'asmtp.bilkent.edu.tr';                     
         $mail->SMTPAuth   = true;                                   
-        $mail->Username   =  'erdem.erdogdu@ug.bilkent.edu.tr';                                       
-        $mail->Password   =  'Erdem148170' ;                     
+        $mail->Username   =  'buraya mail';                                       
+        $mail->Password   =  'buraya password' ;                     
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587; 
     
         //Recipients
-        $mail->setFrom('erdem.erdogdu@ug.bilkent.edu.tr', 'buraya isim yazilacak');
+        $mail->setFrom('buraya tekrar mail', 'Server Mail Verification');
         // $mail->setFrom('ahmet@ug.bilkent.edu.tr', 'Ahmet Yılmaz');
         $mail->addAddress($to, $to);     //Add a recipient
         // You can add more than one address
