@@ -70,7 +70,7 @@
     <form action="" method="post">
         <h3>Login Here</h3>
         <label for="email">Email</label>
-        <input type="text" name="email" id="" value=<?= isset($email) ? "$email" : "" ?>>
+        <input type="text" name="email" id="" value="<?= isset($email) ? htmlspecialchars($email) : "" ?>">
         <?php if (isset($error["email"])){ ?>
         <p><?=$error["email"]?></p>
         <?php  }?>

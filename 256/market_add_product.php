@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             move_uploaded_file($file["tmp_name"], "./images/" . $file["name"]);
                             $product_image = $file["name"];
                             $market_email = $_SESSION["market_user"]["email"];
-                            createProduct($product_title, $product_price, $product_disc_price, $product_image, $product_exp_date, $stock, $market_email);
+                            createProduct(htmlspecialchars($product_title) , $product_price, $product_disc_price, $product_image, $product_exp_date, $stock, $market_email);
                             header("location: market_add_product.php?success=1");
                         } else {
                             $error["file"] = "Upload image file only!";
