@@ -124,8 +124,12 @@ if(isset($_GET["message"])){
       </style>
     <link rel="stylesheet" href="app.css">
 </head>
-<body style="   width: 100%">
+<body style="width: 100%">
   <?= require_once "market_user_header.php"; ?>
+  <style>
+      .product{overflow: visible;}
+      body{overflow: visible;}
+  </style>
   <main>
     <section class="product">
       <div style="margin: auto;  width: 90%; padding: 20px; ">
