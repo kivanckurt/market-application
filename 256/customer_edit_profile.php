@@ -159,23 +159,23 @@
                 <table>
                     <tr>
                         <td>Name</td>
-                        <td><input type="text" name="name" id="name" value="<?= htmlspecialchars($user['name']) ?>"></td>
+                        <td><input type="text" name="name" id="name" value="<?= ($user['name']) ?>"></td>
                     </tr>
                     <tr>
                         <td>Email</td>
-                        <td><input type="text" name="email" id="email" value="<?= htmlspecialchars($user['email']) ?>"></td>
+                        <td><input type="text" name="email" id="email" value="<?=($user['email']) ?>"></td>
                     </tr>
                     <tr>
                         <td>City</td>
-                        <td><input type="text" name="city" id="city" value="<?= htmlspecialchars($user['city']) ?>"></td>
+                        <td><input type="text" name="city" id="city" value="<?= ($user['city']) ?>"></td>
                     </tr>
                     <tr>
                         <td>District</td>
-                        <td><input type="text" name="district" id="district" value="<?= htmlspecialchars($user['district']) ?>"></td>
+                        <td><input type="text" name="district" id="district" value="<?= ($user['district']) ?>"></td>
                     </tr>
                     <tr>
                         <td>Address</td>
-                        <td><input type="text" name="address" id="address" value="<?= htmlspecialchars($user['address']) ?>"></td>
+                        <td><input type="text" name="address" id="address" value="<?= ($user['address']) ?>"></td>
                     </tr>
                     <tr>
                         <td></td>

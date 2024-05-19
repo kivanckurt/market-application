@@ -24,7 +24,7 @@
                 $post=$_SESSION["post"];
                 $_SESSION["ok"]=false;
                 extract($post);
-                customer_register($email,$password,$fullname,$city,$district,$address);
+                customer_register(htmlspecialchars($email),$password,htmlspecialchars($fullname),htmlspecialchars($city),htmlspecialchars($district),htmlspecialchars($address));
                 if(validateCustomerUser($email, $password, $user)){
 
                     $_SESSION["customer_user"] = $user; // MAKING AN ACTIVE SESSION
@@ -51,12 +51,6 @@
             $_SESSION["post"]=$_POST;
             extract($_POST);
             //BURDA GICIK SEYLER DÖNDÜ. FAZLADAN GÜVENLİK OLARAK DÜŞÜN.
-            
-            $fullname=htmlspecialchars($fullname);
-            $city=htmlspecialchars($city);
-            $district=htmlspecialchars($district);
-            $address=htmlspecialchars($address);
-            $email=htmlspecialchars($email);
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
             $error["email"]="Email is in a incorrect format";
@@ -134,11 +128,11 @@
         <h3>Customer Registration</h3>
 
         <label for="email">Email</label>
-        <input type='text' name='email' id='' value="<?= isset($email) ? $email: "" ?>">
+        <input type='text' name='email' id='' value="<?= isset($email) ? htmlspecialchars($email) : "" ?>">
             
 
         <label for="fullname">Full Name</label>
-        <input type='text' name='fullname' id='' value="<?= isset($fullname) ? $fullname: "" ?>">
+        <input type='text' name='fullname' id='' value="<?= isset($fullname) ? htmlspecialchars($fullname): "" ?>">
             
 
         <label for="password">Password</label>
@@ -146,15 +140,15 @@
            
 
         <label for="city">City</label>
-        <input type='text' name='city' id='' value="<?= isset($city) ? $city : "" ?>">
+        <input type='text' name='city' id='' value="<?= isset($city) ? htmlspecialchars($city) : "" ?>">
 
 
         <label for="district">District</label>
-        <input type='text' name='district' id='' value="<?= isset($district) ? $district: "" ?>">
+        <input type='text' name='district' id='' value="<?= isset($district) ? htmlspecialchars($district): "" ?>">
             
 
         <label for="address">Address</label>
-        <input type='text' name='address' id='' value="<?= isset($address) ? $address: "" ?>">
+        <input type='text' name='address' id='' value="<?= isset($address) ? htmlspecialchars($address) : "" ?>">
 
 
         <button type="submit">Register</button> 
