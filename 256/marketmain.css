@@ -72,6 +72,7 @@
 }
 
 .product{
+	height: fit-content;
 	margin: 35px;  width: 50%;
 	background: var(--sidebar);
     padding: 2em;
@@ -111,6 +112,7 @@ h2{
 	 margin: 0 auto;
 }
  .sidebar {
+
     flex: 1;
 	 flex-basis: 200px;
 	 max-width: 200px;
@@ -118,6 +120,7 @@ h2{
 	 background-color: var(--sidebar);
 	 display: flex;
 	 flex-direction: column;
+
 }
  .sidebar-header {
 	 display: flex;

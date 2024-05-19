@@ -84,7 +84,7 @@
     <title>Document</title>
     <style>
         .form{margin: 50px;}
-        .formBody{display: flex;}
+        body{height: 5000px;}
     </style>
 </head>
 <body>
