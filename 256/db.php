@@ -179,7 +179,7 @@ function market_register($email,$market_name,$password,$city,$district,$address)
 
 function customer_register($email,$password,$fullname,$city,$district,$address){
     global $db ;
-    $stmt = $db->prepare("INSERT INTO customers VALUES (?, ?, ?,NULL,NULL, ?, ?, ?);") ;
+    $stmt = $db->prepare("INSERT INTO customers (email,password,name,remember,profile,city,district,address)VALUES (?, ?, ?,NULL,NULL, ?, ?, ?);") ;
     $stmt->execute([$email,sha1($password),$fullname,$city,$district,$address]);
 }
 
