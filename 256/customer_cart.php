@@ -37,7 +37,7 @@
 
     if($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["purchase"])){
         purchaseCart();
-        header("location: customer_main.php");
+        header("location: customer_order_complete.php");
     }
     require_once "customer_header.php";
 ?>

@@ -106,9 +106,8 @@
     justify-content: center;
     font-size: 2rem;
     color: var(--font-color);
-    margin: 40px 0 20px;
+    margin: 40px 0 35px;
     position: relative;
-    text-transform: uppercase;
 }
 
 .products-heading::before,
@@ -208,7 +207,7 @@ body {
 .add_to_cart {
     display: inline-block;
     padding: 10px 20px;
-    background: var(--primary-color);
+    background: #38b460;
     color: #fff;
     border-radius: 5px;
     text-decoration: none;
@@ -270,87 +269,108 @@ a.disabled {
   cursor: default;
 }
 
+
+.actions {
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin-top: 10px;
+}
+
+.add_to_decrease,
+.add_to_increase {
+    display: inline-block;
+    background-color: #d3d3d3;
+    color: #333;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.add_to_decrease:hover,
+.add_to_increase:hover {
+    background-color: #b3b3b3;
+}
+
+.quantity {
+    font-size: 1.2em;
+    padding: 0 10px;
+    color: #333;
+}
+
+
 </style>
 
 
 </head>
 <body>
+    <?php if (isset($_SESSION["customer_user"])): ?>
+        <?php extract($_SESSION["customer_user"]); ?>
+    <?php endif; ?>
 
-    <?php
-    if(isset($_SESSION["customer_user"])){
-        extract($_SESSION["customer_user"]);
-        // var_dump($_SESSION["market_user"]);
-        $user = $_SESSION["customer_user"];
-    }
-    ?>
-    <!-- <h1><?=$user["name"]?></h1>
-    <h1><?=$user["email"]?></h1>
-    <h1><?=$user["city"]?></h1>
-    <h1><?=$user["city"]?></h1>
-    <h1><?=$user["district"]?></h1>
-    <h1><?=$user["address"]?></h1>
-    <h1><?=$user["remember"]?></h1>
-    <h1><?=$user["profile"]?></h1> -->
+    <h2 class="products-heading">
+        <?php if (isset($keyword) && !empty($keyword)): ?>
+            Displaying results for search term: "<?= htmlspecialchars($keyword) ?>"
+        <?php else: ?>
+            Products
+        <?php endif; ?>
+    </h2>
 
-
-    <h2 class="products-heading">Products</h2>
-
-<section class="market_products">
-    <?php
-    foreach ($products as $p){ 
-        $productId = $p["product_id"];
-        $hasDiscount = isUpcomingProduct($productId);
-        $t = time() + 60*60*24*4;
-        $isSafe = strtotime($p["product_exp_date"]) >= $t;
-        ?>
-        <div class="market_product <?= $isSafe ? 'safe' : '' ?>">
-            <?php if ($hasDiscount): ?>
-                <div class="discount_tag">
-                    <span class="discount_icon"><img src="./images/discount.png"></span>
-                </div>
-            <?php endif; ?>
-            <img src="./images/<?= $p["product_image"] ?>" alt="Product Image" class="market_prod_img">
-            <h4><?= $p["product_title"] ?></h4>
-            <p class="price">
+    <section class="market_products">
+        <?php foreach ($products as $p): ?>
+            <div class="market_product">
+                <?php $productId = $p["product_id"]; ?>
+                <?php $hasDiscount = isUpcomingProduct($productId); ?>
+                <?php $isSafe = strtotime($p["product_exp_date"]) >= time() + 60*60*24*4; ?>
                 <?php if ($hasDiscount): ?>
-                    <span class="original_price"><?= $p["product_price"] ?> TL</span> <?= $p["product_disc_price"] ?> TL
-                <?php else: ?>
-                    <?= $p["product_price"] ?> TL
-                <?php endif; ?>
-            </p>
-            <p class="expiration_date">Expires on: <?= $p["product_exp_date"] ?></p>
-            <p class="stock">Stock: <?= $p["stock"] ?></p>
-            <p class="district">District: <?= $district ?></p>
-            <?php if(isInCart($p["product_id"])){ ?>
-                <div class="actions">
-                        <a href="?increment=<?= $p["product_id"] ?>" class="quantity-adjust"  <?= $cart[$p["product_id"]] >= getStock($p["product_id"]) ? "hidden" : "" ?>>+</a>
-                        <span class="quantity"><?= $cart[$p["product_id"]] ?></span>
-                        <a href="?decrease=<?= $p["product_id"] ?>" class="quantity-adjust">-</a>
+                    <div class="discount_tag">
+                        <span class="discount_icon"><img src="./images/discount.png"></span>
                     </div>
-            <?php }else{?>
-            <a href="?add=<?= $p["product_id"] ?>" class="add_to_cart">Add To Cart</a>
-            <?php }?>
-        </div>
-    <?php } ?>
-</section>
+                <?php endif; ?>
+                <img src="./images/<?= $p["product_image"] ?>" alt="Product Image" class="market_prod_img">
+                <h4><?= $p["product_title"] ?></h4>
+                <p class="price">
+                    <?php if ($hasDiscount): ?>
+                        <span class="original_price"><?= $p["product_price"] ?> TL</span> <?= $p["product_disc_price"] ?> TL
+                    <?php else: ?>
+                        <?= $p["product_price"] ?> TL
+                    <?php endif; ?>
+                </p>
+                <p class="expiration_date">Expires on: <?= $p["product_exp_date"] ?></p>
+                <p class="stock">Stock: <?= $p["stock"] ?></p>
+                <p class="district">District: <?= $district ?></p>
+                <?php if (isInCart($p["product_id"])): ?>
+                    <div class="actions">
+                        <a href="?decrease=<?= $p["product_id"] ?>" class="add_to_decrease">-</a>
+                        <span class="quantity"><?= $cart[$p["product_id"]] ?></span>
+                        <a href="?increment=<?= $p["product_id"] ?>" class="add_to_increase" style="<?= $cart[$p["product_id"]] >= getStock($p["product_id"]) ? 'visibility:hidden;' : '' ?>">+</a>
+                    </div>
+                <?php else: ?>
+                    <a href="?add=<?= $p["product_id"] ?>" class="add_to_cart">Add To Cart</a>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    </section>
 
-
-<div class="pagination">
-    <?php if ($page > 1): ?>
-        <a href="?page=<?= $page - 1 ?>" class="arrow">&laquo;</a>
-    <?php endif; ?>
-    <?php
-    if ($pageCnt > 1) {
-        for ($i = 1; $i <= $pageCnt; $i++) {
-            echo "<a href='?page=$i' class='" . ($i == $page ? "active" : "") . "'>$i</a> ";
-        }
-    }
-    ?>
-    <?php if ($page < $pageCnt): ?>
-        <a href="?page=<?= $page + 1 ?>" class="arrow">&raquo;</a>
-    <?php endif; ?>
-</div>
-
-
+    <div class="pagination">
+        <?php if ($page > 1): ?>
+            <a href="?page=<?= $page - 1 ?>" class="arrow">&laquo;</a>
+        <?php endif; ?>
+        <?php for ($i = 1; $i <= $pageCnt; $i++): ?>
+            <a href="?page=<?= $i ?>" class="<?= $i == $page ? "active" : "" ?>"><?= $i ?></a>
+        <?php endfor; ?>
+        <?php if ($page < $pageCnt): ?>
+            <a href="?page=<?= $page + 1 ?>" class="arrow">&raquo;</a>
+        <?php endif; ?>
+    </div>
 </body>
 </html>
