@@ -18,6 +18,12 @@ $user = $_SESSION["market_user"];
 if(!empty($_POST)){
   extract($_POST);
   $error=[];
+
+  $email=htmlspecialchars($email);
+  $market_name=htmlspecialchars($market_name);
+  $city= htmlspecialchars($city);
+  $district=htmlspecialchars($district);
+  $address=htmlspecialchars($address);
   if(array_key_exists('email',$_POST)){
     if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
       $error["email"]="Email is in a incorrect format";
@@ -52,7 +58,7 @@ if(!empty($_POST)){
 
 
 
-  var_dump($_POST);
+  //var_dump($_POST);
 }
 
 if(empty($error)){
@@ -81,8 +87,8 @@ if(!empty($_POST) && isset($email) && isset($market_name) && isset($city) && iss
   $_SESSION["market_user"]=$user;
 
   //remember me options
-  var_dump(isset($user["remember"]));
-  var_dump(isset($_POST["remember"]));
+  //var_dump(isset($user["remember"]));
+  //var_dump(isset($_POST["remember"]));
 
   if(isset($user["remember"]) && isset($_POST["remember"]));
   if(isset($user["remember"]) && !isset($_POST["remember"])){
@@ -137,26 +143,26 @@ if(isset($_GET["message"])){
       <h1>Edit Profile</h1>
           <div class="nice-form-group">
             <label>Email</label>
-            <input type="text" name="email" id="email" value="<?= htmlspecialchars($user['email']) ?>" readonly>
+            <input type="text" name="email" id="email" value="<?= ($user['email']) ?>" readonly>
           </div>
   
           <div class="nice-form-group">
             <label>Market Name</label>
-            <input type="text" name="market_name" id="market_name" value="<?= htmlspecialchars($user['market_name']) ?>">
+            <input type="text" name="market_name" id="market_name" value="<?= ($user['market_name']) ?>">
           </div>
           <div class="nice-form-group">
             <label>City</label>
-            <input type="text" name="city" id="city" value="<?= htmlspecialchars($user['city']) ?>">
+            <input type="text" name="city" id="city" value="<?= ($user['city']) ?>">
           </div>
   
           <div class="nice-form-group">
                   <label>District</label>
-                  <input type="text" name="district" id="district" value="<?= htmlspecialchars($user['district']) ?>">
+                  <input type="text" name="district" id="district" value="<?= ($user['district']) ?>">
           </div>
   
           <div class="nice-form-group">
             <label>Address</label>
-            <input type="text" name="address" id="address" value="<?= htmlspecialchars($user['address']) ?>">
+            <input type="text" name="address" id="address" value="<?= ($user['address']) ?>">
           </div>
           <div class="nice-form-group">
             <label>Remember Me</label>
