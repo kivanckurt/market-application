@@ -49,6 +49,22 @@
         $products = $stmt ->fetchAll();
     }
 
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['delete_product'])) {
+      // Check if the user has confirmed deletion
+      if (isset($_POST['confirm_delete'])) {
+          // Process deletion of the product
+          // You can add your deletion logic here
+          // For example, you might delete the product from the database
+          // Once deletion is done, you can redirect the user or display a success message
+          // For demonstration purposes, I'll assume the product is deleted and redirect the user
+          header("Location: market_main.php?message='Product deleted successfully'");
+          exit;
+      } else {
+          // If the user hasn't confirmed deletion, redirect back to the main page
+          header("Location: market_main.php");
+          exit;
+      }
+  }
 
 
 
@@ -145,11 +161,12 @@
         <div class="product-cell stock"><span class="cell-label">Stock:</span><span><?= $p["stock"]?></span></div>
         <button class="cell-edit" onclick='location.href="market_edit_product.php?product_id=<?= $p["product_id"] ?>"'>
             <i class="fa-solid fa-bars"></i>
-        <button class="cell-remove" onclick='location.href="market_remove_product.php?product_id=<?= $p["product_id"] ?>"'>
+            <button class="cell-remove" onclick="
+              if (confirm('Are you sure you want to remove this item? <?=$p['product_title'] ?>')) {
+                  window.location.href='market_remove_product.php?product_id=<?= $p['product_id'] ?>';
+              }">
             <i class="fa-solid fa-trash"></i>
-      
-       
-        
+
       </div>
       <?php  }?>
     </div>

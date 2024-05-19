@@ -63,7 +63,6 @@
   <meta charset="UTF-8">
   <title>Document</title>
   <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css'><link rel="stylesheet" href="./style.css">
-  <script src="https://kit.fontawesome.com/c3e04cab36.js" crossorigin="anonymous"></script>
 
   <style>
     @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap");
@@ -213,8 +212,8 @@
   <section class='hero d-flex align-items-center justify-content-center'>
     <div class='video-wrap'>
       <video autoplay="" playsinline="" loop="" muted="" id="video-bg">
-      <source src="https://tactusmarketing.com/wp-content/uploads/tactus-waves-hero.mp4" type="video/mp4">
-      <source src="https://tactusmarketing.com/wp-content/uploads/tactus-waves-hero.mp4" type="video/mp4">
+      <source src="images/Wave.mp4" type="video/mp4">
+      <source src="images/Wave.mp4" type="video/mp4">
       </video>
     </div>
     <div class='position-absolute w-100 gradient-overlay'></div>

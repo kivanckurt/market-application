@@ -53,8 +53,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="marketmain.css">
+    <link rel="stylesheet" href="notification.css">
     <title>Document</title>
-   <link rel="stylesheet" href="marketmain.css">
+
    
 </head>
 <body>
@@ -62,70 +63,61 @@
     <section class="product">
     <div style="margin: auto;  width: 90%; padding: 50px; ">
 
-    <form action="" method="post" enctype="multipart/form-data">
-        <h1>Edit Product</h1>
-        <div class="nice-form-group">
-          <label>Title</label>
-          <input type="text" name="product_title" id=""value="<?= htmlspecialchars($product_title)?>">
-        </div>
+        <form action="" method="post" enctype="multipart/form-data">
+            <h1>Edit Product</h1>
+            <div class="nice-form-group">
+              <label>Title</label>
+              <input type="text" name="product_title" id=""value="<?= htmlspecialchars($product_title)?>" >
+            </div>
 
-        <div class="nice-form-group">
-          <label>Price</label>
-          <input type="text" name="product_price" id=""value="<?= htmlspecialchars($product_price)?>" >
-        </div>
-        <div class="nice-form-group">
-          <label>Discounted Price</label>
-          <input type="text" name="product_disc_price" id=""value="<?= htmlspecialchars($product_disc_price)?>" >
-        </div>
+            <div class="nice-form-group">
+              <label>Price</label>
+              <input type="text" name="product_price" id=""value="<?= htmlspecialchars($product_price)?>" >
+            </div>
+            <div class="nice-form-group">
+              <label>Discounted Price</label>
+              <input type="text" name="product_disc_price" id=""value="<?= htmlspecialchars($product_disc_price)?>" >
+            </div>
 
-        <div class="nice-form-group">
-                <label>Date</label>
-                <input type="date" name="product_exp_date" id="" value="<?= htmlspecialchars($product_exp_date)?>">
-        </div>
+            <div class="nice-form-group">
+                    <label>Date</label>
+                    <input type="date" name="product_exp_date" id="" value="<?= htmlspecialchars($product_exp_date)?>" >
+            </div>
 
-        <div class="nice-form-group">
-          <label>Stock</label>
-          <input type="number" name="product_stock" id="" maxlength="80px" value="<?= $product_stock ?? $stock ?>"/>
-        </div>
-        <div class="nice-form-group">
-          <label>File upload</label>
-          <input type="file" name="newImage" require />
-        </div>
-        <div class="app-content-submit">
-            <button class="app-content-submitButton" type="submit">Submit</button>
-        </div>
-    </form>
-        
-        <?php if (isset($error)){ ?>
-        <div class="errort">
-            <?php if (isset($error["product_title"])){ ?>
-                <p><?=$error["product_title"]?></p>
-            <?php  }?>
-            <?php if (isset($error["product_price"])){ ?>
-                <p><?=$error["product_price"]?></p>
-            <?php  }?>
-            <?php if (isset($error["product_disc_price"])){ ?>
-                <p><?=$error["product_disc_price"]?></p>
-            <?php  }?>
-            <?php if (isset($error["stock"])){ ?>
-                <p><?=$error["stock"]?></p>
-            <?php  }?>
-            <?php if (isset($error["exist"])){ ?>
-                <p><?=$error["exist"]?></p>
-            <?php  }?>
-            <?php if (isset($error["file"])){ ?>
-                <p><?=$error["file"]?></p>
-            <?php  }?>
-        </div>
-        <?php  }?>
-        <?php if (isset($success)){ ?>
-                <p><?=$success?></p>
-        <?php  }?>
-
-
-
+            <div class="nice-form-group">
+              <label>Stock</label>
+              <input type="number" name="product_stock" id="" maxlength="80px" value="<?= $product_stock ?? $stock ?>" />
+            </div>
+            <div class="nice-form-group">
+              <label>File upload</label>
+              <input type="file" name="newImage" />
+            </div>
+            <div class="app-content-submit">
+                <button class="app-content-submitButton" type="submit">Submit</button>
+            </div>
+        </form>
     </div>
     </section>
-
+    <div class="notf-container">
+            <?php if (isset($error)) { ?>
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        <?php foreach ($error as $err) { ?>
+                            var successMessage = "<?php echo $err; ?>";
+                            flatNotify().error(successMessage, 5000);
+                        <?php } ?>
+                    });
+                </script>
+            <?php } ?>
+            <?php if (isset($success)) { ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    var successMessage = "<?php echo $success; ?>";
+                    flatNotify().success(successMessage, 2000);
+                });
+            </script>
+            <?php } ?>
+    </div>
+    <script src="notification.js"></script>
 </body>
 </html>

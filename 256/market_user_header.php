@@ -18,7 +18,7 @@ if(isset($_SESSION["market_user"])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="path/to/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/c3e04cab36.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="marketmain.css">
 </head>
 <body>
