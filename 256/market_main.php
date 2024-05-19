@@ -156,7 +156,7 @@
       <div class="products-row">
          </button>
           <div class="product-cell image">
-          <img src="./images/<?=$p["product_image"] ?>" alt="product">
+          <a href="./images/<?=$p["product_image"] ?>" ><img src="./images/<?=$p["product_image"] ?>" alt="product"></a>
             <span class="market_product_title"><?=$p["product_title"] ?></span>
           </div>
           <div class="product-cell price"><span class="cell-label">Price:</span><span class="market_product_price"> <?=$p["product_price"] ?>TL</span></div>
