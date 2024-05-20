@@ -113,7 +113,6 @@
       background: -moz-linear-gradient(top, rgba(33, 33, 33, 0) 0%, #101827 50%);
       background: -webkit-linear-gradient(top, rgba(33, 33, 33, 0) 0%, #101827 50%);
       background: linear-gradient(to bottom, rgba(33, 33, 33, 0) 0%, #101827 50%);
-      filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#00101827", endColorstr="#101827",GradientType=0 );
       z-index: 1;
 
       pointer-events: none;

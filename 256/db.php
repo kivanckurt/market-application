@@ -93,7 +93,7 @@ function updateProduct($user, $product_id, $product_title, $product_price, $prod
 
     // Bind parameters with their respective data types for improved security
     $product_stock = (int)$product_stock;
-    var_dump($product_stock);
+    // var_dump($product_stock);
     // $stmt->bindParam(':product_title',  PDO::PARAM_STR);
     // $stmt->bindParam(':product_price', , PDO::PARAM_STR);  // Consider PDO::PARAM_INT if price is purely numeric
     // $stmt->bindParam(':product_disc_price', , PDO::PARAM_STR);  // Consider PDO::PARAM_INT if price is purely numeric

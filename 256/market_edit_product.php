@@ -70,26 +70,26 @@
             <h1>Edit Product</h1>
             <div class="nice-form-group">
               <label>Title</label>
-              <input type="text" name="product_title" id=""value="<?= htmlspecialchars($product_title)?>" >
+              <input type="text" name="product_title" id=""value="<?= htmlspecialchars($product_title)?>" required >
             </div>
 
             <div class="nice-form-group">
               <label>Price</label>
-              <input type="text" name="product_price" id=""value="<?= htmlspecialchars($product_price)?>" >
+              <input type="text" name="product_price" id=""value="<?= htmlspecialchars($product_price)?>" required >
             </div>
             <div class="nice-form-group">
               <label>Discounted Price</label>
-              <input type="text" name="product_disc_price" id=""value="<?= htmlspecialchars($product_disc_price)?>" >
+              <input type="text" name="product_disc_price" id=""value="<?= htmlspecialchars($product_disc_price)?>" required >
             </div>
 
             <div class="nice-form-group">
                     <label>Date</label>
-                    <input type="date" name="product_exp_date" id="" value="<?= htmlspecialchars($product_exp_date)?>" >
+                    <input type="date" name="product_exp_date" id="" value="<?= htmlspecialchars($product_exp_date)?>" required >
             </div>
 
             <div class="nice-form-group">
               <label>Stock</label>
-              <input type="number" name="product_stock" id="" maxlength="80px" value="<?= $product_stock ?? $stock ?>" />
+              <input type="number" name="product_stock" id="" maxlength="80px" value="<?= $product_stock ?? $stock ?>" required />
             </div>
             <div class="nice-form-group">
               <label>File upload</label>
