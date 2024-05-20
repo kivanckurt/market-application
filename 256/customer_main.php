@@ -363,13 +363,13 @@ a.disabled {
 
     <div class="pagination">
         <?php if ($page > 1): ?>
-            <a href="?page=<?= $page - 1 ?>" class="arrow">&laquo;</a>
+            <a href="?page=<?= $page - 1 ?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>" class="arrow">&laquo;</a>
         <?php endif; ?>
         <?php for ($i = 1; $i <= $pageCnt; $i++): ?>
-            <a href="?page=<?= $i ?>" class="<?= $i == $page ? "active" : "" ?>"><?= $i ?></a>
+            <a href="?page=<?= $i ?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>" class="<?= $i == $page ? "active" : "" ?>"><?= $i ?></a>
         <?php endfor; ?>
         <?php if ($page < $pageCnt): ?>
-            <a href="?page=<?= $page + 1 ?>" class="arrow">&raquo;</a>
+            <a href="?page=<?= $page + 1 ?><?=$keyword == "" ? "" :"&keyword=$cleanedKeyword"?>" class="arrow">&raquo;</a>
         <?php endif; ?>
     </div>
 </body>
