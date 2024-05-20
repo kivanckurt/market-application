@@ -24,7 +24,7 @@
                 $post=$_SESSION["post"];
                 $_SESSION["ok"]=false;
                 extract($post);
-                market_register($email,$market_name,$password,$city,$district,$address);
+                market_register(htmlspecialchars($email),htmlspecialchars($market_name),htmlspecialchars($password),htmlspecialchars($city),htmlspecialchars($district),htmlspecialchars($address));
                 if(validateMarketUser($email, $password, $user)){
 
                     $_SESSION["market_user"] = $user; // MAKING AN ACTIVE SESSION
@@ -48,13 +48,6 @@
         else{
             $_SESSION["post"]=$_POST;
             extract($_POST);
-           
-            $market_name=htmlspecialchars($market_name);
-            $city=htmlspecialchars($city);
-            $district=htmlspecialchars($district);
-            $address=htmlspecialchars($address);
-            $email=htmlspecialchars($email);
-
             if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
             $error["email"]="Email is in a incorrect format";
             }
@@ -82,7 +75,7 @@
 
             if(empty($error)){
             $subject="Customer Mail Verification";
-            $random = rand(10000,99999);
+            $random = rand(100000,999999);
             Mail::send($email,$subject, $random) ;
             $_SESSION["random"]=$random;
             $_SESSION["ok"]=true;
@@ -98,12 +91,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="notification.css">
     <link rel="stylesheet" href="marketregisterpage.css">
+
     <title>Document</title>
 </head>
 <body>
     
-    <?php if (isset($_SESSION["ok"]) && $_SESSION["ok"]){ ?>
+        <?php if (isset($_SESSION["ok"]) && $_SESSION["ok"]){ ?>
     <form action="" method="post">
     <h3>Market Registration</h3>
     <table>
@@ -127,52 +122,50 @@
         <h3>Market Registration</h3>
 
         <label for="email">Email</label>
-        <input type='text' name='email' id='' value="<?= isset($email) ? filter_var($email, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='email' id='' value="<?= isset($email) ? htmlspecialchars($email) : "" ?>">
 
 
         <label for="market_name">Market Name: </label>
-        <input type='text' name='market_name' id='' value=<?= isset($market_name) ? "$market_name" : "" ?>>
+        <input type='text' name='market_name' id='' value="<?= isset($market_name) ? htmlspecialchars($market_name) : "" ?>">
         
      
         <label for="password">Password</label>
-        <input type='password' name='password' id='' value="<?= isset($password) ? filter_var($password, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='password' name='password' id='' value="<?= isset($password) ? filter_var($password, FILTER_SANITIZE_FULL_SPECIAL_CHARS ) : "" ?>">
 
         <label for="city">City</label>
-        <input type='text' name='city' id='' value="<?= isset($city) ? filter_var($city, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='city' id='' value="<?= isset($city) ? htmlspecialchars($city) : "" ?>">
 
 
         <label for="district">District</label>
-        <input type='text' name='district' id='' value="<?= isset($district) ? filter_var($district, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='district' id='' value="<?= isset($district) ? htmlspecialchars($district) : "" ?>">
             
 
         <label for="address">Address</label>
-        <input type='text' name='address' id='' value="<?= isset($address) ? filter_var($address, FILTER_SANITIZE_STRING) : "" ?>">
+        <input type='text' name='address' id='' value="<?= isset($address) ? htmlspecialchars($address) : "" ?>">
 
 
         <button type="submit">Register</button> 
     </form>
-
-    <?php if (isset($error)){ ?>
-        <div class="errort">
-            <?php if (isset($error["email"])){ ?>
-                <p><?=$error["email"]?></p>
-            <?php  }?>
-            <?php if (isset($error["market_name"])){ ?>
-                <p><?=$error["market_name"]?></p>
-            <?php  }?>
-            <?php if (isset($error["password"])){ ?>
-                <p><?=$error["password"]?></p>
-            <?php  }?>
-            <?php if (isset($error["city"])){ ?>
-                <p><?=$error["city"]?></p>
-            <?php  }?>
-            <?php if (isset($error["district"])){ ?>
-                <p><?=$error["district"]?></p>
-            <?php  }?>
-            <?php if (isset($error["address"])){ ?>
-                <p><?=$error["address"]?></p>
-            <?php  }?>
-        </div>
-    <?php  }?>
+    <div class="notf-container">
+        <?php if (isset($error)) { ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    <?php foreach ($error as $err) { ?>
+                        var successMessage = "<?php echo $err; ?>";
+                        flatNotify().error(successMessage, 5000);
+                    <?php } ?>
+                });
+            </script>
+        <?php } ?>
+        <?php if (isset($success)) { ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successMessage = "<?php echo $success; ?>";
+                flatNotify().success(successMessage, 2000);
+            });
+        </script>
+        <?php } ?>
+    </div>
+    <script src="notification.js"></script>
 </body>
 </html>

@@ -93,7 +93,7 @@ function updateProduct($user, $product_id, $product_title, $product_price, $prod
 
     // Bind parameters with their respective data types for improved security
     $product_stock = (int)$product_stock;
-    var_dump($product_stock);
+    // var_dump($product_stock);
     // $stmt->bindParam(':product_title',  PDO::PARAM_STR);
     // $stmt->bindParam(':product_price', , PDO::PARAM_STR);  // Consider PDO::PARAM_INT if price is purely numeric
     // $stmt->bindParam(':product_disc_price', , PDO::PARAM_STR);  // Consider PDO::PARAM_INT if price is purely numeric
@@ -179,7 +179,7 @@ function market_register($email,$market_name,$password,$city,$district,$address)
 
 function customer_register($email,$password,$fullname,$city,$district,$address){
     global $db ;
-    $stmt = $db->prepare("INSERT INTO customers VALUES (?, ?, ?,NULL,NULL, ?, ?, ?);") ;
+    $stmt = $db->prepare("INSERT INTO customers (email,password,name,remember,profile,city,district,address)VALUES (?, ?, ?,NULL,NULL, ?, ?, ?);") ;
     $stmt->execute([$email,sha1($password),$fullname,$city,$district,$address]);
 }
 

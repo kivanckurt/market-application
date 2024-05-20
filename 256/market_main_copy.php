@@ -23,7 +23,6 @@
 
     //Get Query
 
-
     if($_SERVER["REQUEST_METHOD"]=="GET"){
         extract($_GET);
         $keyword = $keyword ?? "";
@@ -96,6 +95,9 @@
     <div class="app-content-actions">
       <form action="" method="get">
         <input class="search-bar" placeholder="Search..." type="text" name="keyword" value="<?=$keyword?>">
+        <?php if(isset($_GET["filter"]) && array_key_exists($filter,$ar)){
+          echo "<input type='hidden' name='filter' value='$filter'>";
+        } ?>
       </form>
       <div class="app-content-actions-wrapper">
         <div class="filter-button-wrapper">
@@ -115,6 +117,9 @@
               <button class="filter-button reset">
                 Reset
               </button>
+              <?php if($keyword != ""){
+                    echo "<input type='hidden' name='keyword' value='$cleanedKeyword'>";
+                    } ?>
               </form>
             </div>
           </div>

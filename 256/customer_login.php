@@ -5,7 +5,17 @@
     if(!empty($_POST)){
         extract($_POST);
         //Validation
-        $error=[];
+
+
+        if (!$token || $token !== $_SESSION['CSRFtoken']) {
+            // return 405 http status code
+            //var_dump($token);
+            //var_dump($_SESSION['CSRFtoken']);
+            header($_SERVER['SERVER_PROTOCOL'] . ' 405 Method Not Allowed');
+            exit;
+            } else {
+
+                $error=[];
         if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
             $error["email"]="Email is in a incorrect format";
         }
@@ -30,6 +40,15 @@
         }
 
         }
+
+            }
+        
+    }
+    else{
+        $SALT = "_CTIS_SALT_98234698234928569";
+        $secret_key = bin2hex(random_bytes(10));
+        $csrf_token = md5($secret_key . $SALT);
+        $_SESSION['CSRFtoken'] = $csrf_token;
     }
 
     //remember me auto log in part
@@ -70,7 +89,7 @@
     <form action="" method="post">
         <h3>Login Here</h3>
         <label for="email">Email</label>
-        <input type="text" name="email" id="" value=<?= isset($email) ? "$email" : "" ?>>
+        <input type="text" name="email" id="" value="<?= isset($email) ? htmlspecialchars($email) : "" ?>">
         <?php if (isset($error["email"])){ ?>
         <p><?=$error["email"]?></p>
         <?php  }?>
@@ -93,6 +112,8 @@
             </div>
         </div>
     
+        <input type="hidden" name="token" value="<?php echo $_SESSION['CSRFtoken'] ?? '' ?>">
+
         <button type="submit">Log In</button>
         <p class="register">Don't have an account? <a href="customer_register.php"><span>Sign up</span></a></p>
         

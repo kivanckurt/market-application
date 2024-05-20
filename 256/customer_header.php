@@ -22,26 +22,44 @@ require_once "db.php";
     <link rel="stylesheet" href="app.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+        }
         header {
             font-family: Arial, sans-serif;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background-color: #6038b4;
+            background-color: #301c5a;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             padding: 10px 20px;
-            border-radius: 10px;
+            width: 100%;
+            border-radius: 0; /* Remove rounded corners */
+            box-sizing: border-box;
+        }
+        .logo {
+            flex-shrink: 0;
         }
         .logo a {
             text-decoration: none;
-            color: orange;
+            color: #ffb732;
             font-size: 27px;
             font-weight: bold;
             padding: 12px;
-            border-radius: 10px;
-            overflow: hidden;
         }
         
+        .center-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+        }
+        .search-cart-container {
+            display: flex;
+            align-items: center;
+        }
         .search-container {
             display: flex;
             align-items: center;
@@ -51,8 +69,8 @@ require_once "db.php";
             padding: 5px 10px;
             margin-top: 0;
             margin-bottom: 0;
-            width: 100%;
-            max-width: 300px;
+            flex-grow: 1;
+            width: 350px;
         }
         .search-container input[type="text"] {
             border: none;
@@ -78,7 +96,8 @@ require_once "db.php";
             font-weight: bold;
             border-radius: 10px;
             overflow: hidden;
-            margin-left: -300px;
+            margin-left: 10px;
+            flex-shrink: 0;
         }
         .cartInfo a {
             text-decoration: none;
@@ -156,31 +175,63 @@ require_once "db.php";
             color: grey;
             margin-left: 10px;
         }
+
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .center-container {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            .search-cart-container {
+                flex-direction: column;
+                align-items: flex-start;
+                width: 100%;
+            }
+            .search-container {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                width: 100%;
+                max-width: 100%;
+            }
+            .cartInfo, .userInfo {
+                margin-top: 10px;
+            }
+            .cartInfo {
+                margin-left: 0;
+            }
+        }
     </style>
     <title>Document</title>
 </head>
 <body>
     <header>
         <div class="logo">
-            <a href="customer_main.php">xxmarkt</a>
+            <a href="customer_main.php">XXMarkt</a>
         </div>
-        <form action="customer_main.php?" method="GET" class="search-container">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" name="keyword" id="searchBar" placeholder="Search for a product..." 
-            <?= isset($_GET["keyword"]) ? "value='{$_GET['keyword']}'" :""  ?>>
-        </form>
-        <div class="cartInfo">
-            <a href="customer_cart.php">
-                <div class="cart-icon-container">
-                    <i class="fas fa-shopping-bag cart-icon"></i>
+        <div class="center-container">
+            <div class="search-cart-container">
+                <form action="customer_main.php?" method="GET" class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" name="keyword" id="searchBar" placeholder="Search for a product..." 
+                    <?= isset($_GET["keyword"]) ? "value='{$_GET['keyword']}'" :""  ?>>
+                </form>
+                <div class="cartInfo">
+                    <a href="customer_cart.php">
+                        <div class="cart-icon-container">
+                            <i class="fas fa-shopping-bag cart-icon"></i>
+                        </div>
+                        <div class="price-container">
+                            <?php
+                                $cartInfo = getCartInformation();
+                                echo "₺{$cartInfo['total_price']} - {$cartInfo['item_cnt']} product";
+                            ?>
+                        </div>
+                    </a>
                 </div>
-                <div class="price-container">
-                    <?php
-                        $cartInfo = getCartInformation();
-                        echo "₺{$cartInfo['total_price']}, {$cartInfo['item_cnt']}";
-                    ?>
-                </div>
-            </a>
+            </div>
         </div>
         <div class="userInfo">
             <a href="customer_edit_profile.php">

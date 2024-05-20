@@ -24,7 +24,7 @@
                 $post=$_SESSION["post"];
                 $_SESSION["ok"]=false;
                 extract($post);
-                customer_register($email,$password,$fullname,$city,$district,$address);
+                customer_register(htmlspecialchars($email),$password,htmlspecialchars($fullname),htmlspecialchars($city),htmlspecialchars($district),htmlspecialchars($address));
                 if(validateCustomerUser($email, $password, $user)){
 
                     $_SESSION["customer_user"] = $user; // MAKING AN ACTIVE SESSION
@@ -51,12 +51,6 @@
             $_SESSION["post"]=$_POST;
             extract($_POST);
             //BURDA GICIK SEYLER DÖNDÜ. FAZLADAN GÜVENLİK OLARAK DÜŞÜN.
-            
-            $fullname=htmlspecialchars($fullname);
-            $city=htmlspecialchars($city);
-            $district=htmlspecialchars($district);
-            $address=htmlspecialchars($address);
-            $email=htmlspecialchars($email);
 
             if (filter_var($email, FILTER_VALIDATE_EMAIL)===false) {
             $error["email"]="Email is in a incorrect format";
@@ -85,7 +79,7 @@
 
             if(empty($error)){
                 $subject="Customer Mail Verification";
-                $random = rand(10000,99999);
+                $random = rand(100000,999999);
                 Mail::send($email,$subject, $random) ;
                 $_SESSION["random"]=$random;
                 $_SESSION["ok"]=true;
@@ -103,6 +97,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="notification.css">
     <link rel="stylesheet" href="customer_register.css">
     <title>Document</title>
 </head>
@@ -134,11 +129,11 @@
         <h3>Customer Registration</h3>
 
         <label for="email">Email</label>
-        <input type='text' name='email' id='' value="<?= isset($email) ? $email: "" ?>">
+        <input type='text' name='email' id='' value="<?= isset($email) ? htmlspecialchars($email) : "" ?>">
             
 
         <label for="fullname">Full Name</label>
-        <input type='text' name='fullname' id='' value="<?= isset($fullname) ? $fullname: "" ?>">
+        <input type='text' name='fullname' id='' value="<?= isset($fullname) ? htmlspecialchars($fullname): "" ?>">
             
 
         <label for="password">Password</label>
@@ -146,44 +141,42 @@
            
 
         <label for="city">City</label>
-        <input type='text' name='city' id='' value="<?= isset($city) ? $city : "" ?>">
+        <input type='text' name='city' id='' value="<?= isset($city) ? htmlspecialchars($city) : "" ?>">
 
 
         <label for="district">District</label>
-        <input type='text' name='district' id='' value="<?= isset($district) ? $district: "" ?>">
+        <input type='text' name='district' id='' value="<?= isset($district) ? htmlspecialchars($district): "" ?>">
             
 
         <label for="address">Address</label>
-        <input type='text' name='address' id='' value="<?= isset($address) ? $address: "" ?>">
+        <input type='text' name='address' id='' value="<?= isset($address) ? htmlspecialchars($address) : "" ?>">
 
 
         <button type="submit">Register</button> 
 
     
     </form>
-    <?php if (isset($error)){ ?>
-        <div class="errort">
-            <?php if (isset($error["email"])){ ?>
-                <p><?=$error["email"]?></p>
-            <?php  }?>
-            <?php if (isset($error["fullname"])){ ?>
-                <p><?=$error["fullname"]?></p>
-            <?php  }?>
-            <?php if (isset($error["password"])){ ?>
-                <p><?=$error["password"]?></p>
-            <?php  }?>
-            <?php if (isset($error["city"])){ ?>
-                <p><?=$error["city"]?></p>
-            <?php  }?>
-            <?php if (isset($error["district"])){ ?>
-                <p><?=$error["district"]?></p>
-            <?php  }?>
-            <?php if (isset($error["address"])){ ?>
-                <p><?=$error["address"]?></p>
-            <?php  }?>
-        </div>
-    <?php  }?>
-
+    <div class="notf-container">
+        <?php if (isset($error)) { ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    <?php foreach ($error as $err) { ?>
+                        var successMessage = "<?php echo $err; ?>";
+                        flatNotify().error(successMessage, 5000);
+                    <?php } ?>
+                });
+            </script>
+        <?php } ?>
+        <?php if (isset($success)) { ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successMessage = "<?php echo $success; ?>";
+                flatNotify().success(successMessage, 2000);
+            });
+        </script>
+        <?php } ?>
+    </div>
+    <script src="notification.js"></script>
    
 </body>
 </html>
