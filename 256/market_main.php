@@ -32,13 +32,20 @@
         $formedKeyword ='%'.$sanitizedKeyword.'%';
         $ar = ["active" => "and product_exp_date > CURDATE()","expired" => "and product_exp_date <= CURDATE()", "all" => ""];
         $orderBy = isset($orderBy)? $orderBy : "product_exp_date";
-        $sort = isset($sort) ? $sort : "desc";
-        $queryFilter = isset($filter) ? $ar[$filter] : "";
+
+
+        //Some security impovements
+        if(isset($_GET["sort"]) && $_GET["sort"]!="" && !in_array($_GET["sort"], ["asc","desc"])){
+          header("location: baited.php");
+        }
         if(isset($_GET["filter"]) && !array_key_exists($filter,$ar) ){
           //injection
-          header("location: mal.php");
+          header("location: baited.php");
           exit;
         }
+
+        $sort = isset($sort) ? $sort : "desc";
+        $queryFilter = isset($filter) ? $ar[$filter] : "";
         $query_products ="SELECT * FROM products, market_user where products.market_email = market_user.email
             AND market_user.email = ? and product_title LIKE ? $queryFilter ORDER BY $orderBy $sort;";
         $stmt = $db->prepare($query_products);
