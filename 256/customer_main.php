@@ -347,7 +347,7 @@ a.disabled {
                 </p>
                 <p class="expiration_date">Expires on: <?= $p["product_exp_date"] ?></p>
                 <p class="stock">Stock: <?= $p["stock"] ?></p>
-                <p class="district">District: <?= $district ?></p>
+                <p class="district"><?= $p["market_name"] ?></p>
                 <?php if (isInCart($p["product_id"])): ?>
                     <div class="actions">
                         <a href="?decrease=<?= $p["product_id"] ?>" class="add_to_decrease">-</a>
