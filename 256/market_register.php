@@ -91,7 +91,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="notification.css">
     <link rel="stylesheet" href="marketregisterpage.css">
+
     <title>Document</title>
 </head>
 <body>
@@ -144,28 +146,26 @@
 
         <button type="submit">Register</button> 
     </form>
-
-    <?php if (isset($error)){ ?>
-        <div class="errort">
-            <?php if (isset($error["email"])){ ?>
-                <p><?=$error["email"]?></p>
-            <?php  }?>
-            <?php if (isset($error["market_name"])){ ?>
-                <p><?=$error["market_name"]?></p>
-            <?php  }?>
-            <?php if (isset($error["password"])){ ?>
-                <p><?=$error["password"]?></p>
-            <?php  }?>
-            <?php if (isset($error["city"])){ ?>
-                <p><?=$error["city"]?></p>
-            <?php  }?>
-            <?php if (isset($error["district"])){ ?>
-                <p><?=$error["district"]?></p>
-            <?php  }?>
-            <?php if (isset($error["address"])){ ?>
-                <p><?=$error["address"]?></p>
-            <?php  }?>
-        </div>
-    <?php  }?>
+    <div class="notf-container">
+        <?php if (isset($error)) { ?>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    <?php foreach ($error as $err) { ?>
+                        var successMessage = "<?php echo $err; ?>";
+                        flatNotify().error(successMessage, 5000);
+                    <?php } ?>
+                });
+            </script>
+        <?php } ?>
+        <?php if (isset($success)) { ?>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var successMessage = "<?php echo $success; ?>";
+                flatNotify().success(successMessage, 2000);
+            });
+        </script>
+        <?php } ?>
+    </div>
+    <script src="notification.js"></script>
 </body>
 </html>
