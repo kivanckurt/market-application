@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8">
   <title>XXMarkt</title>
-  <link rel="stylesheet" href="./loginpage.css">
+  <link rel="stylesheet" href="loginpage.css">
   <script src="https://kit.fontawesome.com/c3e04cab36.js" crossorigin="anonymous"></script>
 
 </head>
